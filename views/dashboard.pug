@@ -71,14 +71,14 @@ block content
                                 datalist#problemList
                             div.form-group.part-input
                                 label(for="parts-needed") Parts Needed
-                                .search
+                                .search#pn
                                     include ./images/magnifingGlass.svg
                                 input.form-control.wid-100(type="text",name="parts-needed" placeholder="Enter just the part number using comma seperated values")
                                 
                                 div.msg.hide#parts-needed
                             div.form-group.part-input
                                 label(for="parts-missing") Parts Missing
-                                .search
+                                .search#pm
                                     include ./images/magnifingGlass.svg
                                 input.form-control.wid-100(type="text",name="parts-missing" placeholder="Enter just the part number using comma seperated values")
                                 div.msg.hide#parts-missing

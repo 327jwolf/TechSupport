@@ -415,22 +415,25 @@ domIsReady (function() {
     }
 
     function supportForm(){
-
+        // Main form Selectors
         const entryFormOpen = document.querySelector('.open-hidden');
         const entryFormWrapper = document.querySelector('.form-wrapper');
         const entryForm = entryFormWrapper.querySelector('.entry-form')
-        const createdBy = document.querySelector('input[name=Created-By]');
-        const ticketNumber = document.querySelector('input[name=ticket-number]');
-        const machineList = document.querySelector('#machineList');
-        const problemList = document.querySelector('#problemList');
-        const partSearchDivs = document.querySelectorAll('.search');
-        const searchModal = document.querySelector('.search-wrapper')
-        const bodyNumTarget = document.querySelector('#n-search')
-        const bodyDescTarget = document.querySelector('#d-search')
-        const btnCloseSearchModal = document.querySelector('#btn-close-modal')
+        const createdBy = entryFormWrapper.querySelector('input[name=Created-By]');
+        const ticketNumber = entryFormWrapper.querySelector('input[name=ticket-number]');
+        const machineList = entryFormWrapper.querySelector('#machineList');
+        const problemList = entryFormWrapper.querySelector('#problemList');
+        const partsneeded = entryFormWrapper.querySelector('#pn');
+        const partsmissing = entryFormWrapper.querySelector('#pm');
+
+        // Search Pop-up Selectors
+        const searchModal = document.querySelector('.search-wrapper');
+        const searchFields = searchModal.querySelectorAll('.search-field');
+        const bodyNumTarget = searchModal.querySelector('#n-search');
+        const btnCloseSearchModal = searchModal.querySelector('#btn-close-modal');
         
-        setSelectMenus('/api/machinetypes/all', machineList, 'machinename', `machineType`)
-        setSelectMenus('/api/problemcatagory/all', problemList, `catagoryname`)
+        setSelectMenus('/api/machinetypes/all', machineList, 'machinename', `machineType`);
+        setSelectMenus('/api/problemcatagory/all', problemList, `catagoryname`);
 
         entryFormOpen.addEventListener('click', (e) => {
             if(entryFormWrapper.style.display === 'block'){
@@ -444,113 +447,76 @@ domIsReady (function() {
         })
 
         function closeSearchModal(e){
-
             searchModal.style.display = 'none';
             bodyNumTarget.innerHTML = ``;
             Array.from(searchModal.querySelectorAll('.search-field')).forEach(item => item.value = "")
         }
 
-        btnCloseSearchModal.addEventListener('click', closeSearchModal)
+        btnCloseSearchModal.addEventListener('click', closeSearchModal);
 
-        Array.from(partSearchDivs).forEach(partSearchDiv => {
-            partSearchDiv.addEventListener('click', async (elMagGlass)=>{
-                // elMagGlass.stopPropagation();
-                elMagGlass.preventDefault();
-                
+        let selectedSearchDiv = "";
 
-                let selectedSearchDiv = elMagGlass.target.parentNode;
-                console.log(selectedSearchDiv)
-                searchModal.style.display = 'block';
-                const searchFields = searchModal.querySelectorAll('.search-field');
+        partsneeded.addEventListener('click', getPartsSearch);
+        partsmissing.addEventListener('click', getPartsSearch);
 
-                Array.from(searchFields).forEach(input => {
-                    input.addEventListener('input', async(inputEl)=>{
-                        inputEl.preventDefault();
-                        inputEl.stopPropagation();
-                        let searchParameter = inputEl.target.value;
-                        let apiUrl = inputEl.target.getAttribute('id') === 'number-search' ? 'pn' : 'desc';
+        async function getPartsSearch(elMagGlass) {
+            // elMagGlass.stopPropagation();
+            elMagGlass.preventDefault();
+            selectedSearchDiv = this.parentNode.querySelector('input')//elMagGlass.target.parentNode;
+            searchModal.style.display = 'block';
+        }
 
-                        let timer
+        Array.from(searchFields).forEach(input => {
+            input.addEventListener('input', async(inputEl)=>{
+                inputEl.preventDefault();
+                // inputEl.stopPropagation();
+                let searchParameter = inputEl.target.value;
+                let apiUrl = inputEl.target.getAttribute('id') === 'number-search' ? 'pn' : 'desc';
+
+                let timer
+                bodyNumTarget.innerHTML = ``
+                clearTimeout(timer)
+                if (searchParameter === "*" || searchParameter.length > 2) {
+                    timer = setTimeout(async ()=>{
                         bodyNumTarget.innerHTML = ``
-                        clearTimeout(timer)
-                        if (searchParameter === "*" || searchParameter.length > 2) {
-                            timer = setTimeout(async ()=>{
-                                bodyNumTarget.innerHTML = ``
-                                const lookupResult = await getData(`${window.location.origin}/api/parts/${apiUrl}/${searchParameter}`, 'GET', {data: 'yes'})
-                                .then(res => {
-                                    res.forEach((item, i) => {
-                                        let elContainer = document.createElement("div");
-                                        elContainer.style.paddingTop = '.5rem';
-                                        elContainer.setAttribute('data-key', item._id);
-                                        elContainer.setAttribute('id', `result-${i}`);
-                                        elContainer.classList.add('search-res');
-                                        if(i%2 === 0) {
-                                            elContainer.classList.add('bground-color');
-                                        }
+                        const lookupResult = await getData(`${window.location.origin}/api/parts/${apiUrl}/${searchParameter}`, 'GET', {data: 'yes'})
+                        .then(res => {
+                            res.forEach((item, i) => {
+                                let elContainer = document.createElement("div");
+                                elContainer.style.paddingTop = '.5rem';
+                                elContainer.setAttribute('data-key', item._id);
+                                elContainer.setAttribute('id', `result-${i}`);
+                                elContainer.classList.add('search-res');
+                                if(i%2 === 0) {
+                                    elContainer.classList.add('bground-color');
+                                }
 
-                                        elContainer.addEventListener('click', (e) => {
-                                            // e.preventDefault();
-                                            // e.stopPropagation();
-                                            // console.log(`clicked ${elContainer.getAttribute('data-key')}`)
-                                            console.log(selectedSearchDiv.querySelector('input'))
-                                            selectedSearchDiv.querySelector('input').value = `${item.partNumber} ${item.description}`;
-                                            closeSearchModal()
-                                        })
-
-                                        bodyNumTarget.appendChild(elContainer);
-        
-                                        let elNum = document.createElement("div");
-                                        elNum.style.width = '17%';
-                                        elNum.style.display = 'inline-block';
-                                        elNum.innerText = item.partNumber;
-                                        elContainer.appendChild(elNum);
-        
-                                        let elDesc = document.createElement("div");
-                                        elDesc.style.width = '80%';
-                                        elDesc.style.display = 'inline-block';
-                                        elDesc.innerText = item.description;
-                                        elContainer.appendChild(elDesc);
-                                    })
-                                    
+                                elContainer.addEventListener('click', (e) => {
+                                    selectedSearchDiv.value = `${item.partNumber} ${item.description}`;
+                                    closeSearchModal()
                                 })
-                                .catch(e => console.log(`Error getData: ${e}`))
-                            },250)
-                        }
-                    })
-                })
+
+                                bodyNumTarget.appendChild(elContainer);
+
+                                let elNum = document.createElement("div");
+                                elNum.style.width = '17%';
+                                elNum.style.display = 'inline-block';
+                                elNum.innerText = item.partNumber;
+                                elContainer.appendChild(elNum);
+
+                                let elDesc = document.createElement("div");
+                                elDesc.style.width = '80%';
+                                elDesc.style.display = 'inline-block';
+                                elDesc.innerText = item.description;
+                                elContainer.appendChild(elDesc);
+                            })
+                            
+                        })
+                        .catch(e => console.log(`Error getData: ${e}`))
+                    },250)
+                }
             })
         })
-        
-        
-        
-        /*
-        async function getMachineList() {
-            // let machineList = document.querySelector('#machineList');
-            getData(`${window.location.origin}/api/machinetypes/all`, 'GET', {data: 'yes'})
-            .then(mlist => {
-                mlist.forEach(type => {
-                    let opt = document.createElement('option');
-                    opt.value = `${type.machinename} - ${type.machineType}`;
-                    machineList.appendChild(opt); 
-                })
-            })
-            .catch(e => console.log(e))
-        }
-
-        async function getProblemList() {
-            // let problemList = document.querySelector('#problemList');
-            getData(`${window.location.origin}/api/problemcatagory/all`, 'GET', {data: 'yes'})
-            .then(plist => {
-                plist.forEach(type => {
-                    let opt = document.createElement('option');
-                    opt.value = `  ${type.catagoryname}`;
-                    problemList.appendChild(opt); 
-                })
-            })
-            .catch(e => console.log(e))
-        }
-        */
-
     }
 
 /*******************************************************************/
