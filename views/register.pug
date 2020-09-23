@@ -1,0 +1,39 @@
+extends layout
+
+block content
+    div.wrapper.container
+        div.form-signin(id='register')
+            form(action="/users/register" method="post")
+                div.form-group()
+                    h2 Register
+                    span Aready have an account,
+                        a(href="/users/login")  Sign In
+                if error 
+                    div(class="alert alert-danger" role='alert') #{error}
+                div.form-group
+                    input.form-control.validityChecked(type="hidden", name="_csrf", value=csrfToken)
+                    .msg.hide#csrf
+                div.form-group
+                    label(for="firstname") First Name
+                    input.form-control(type="text",name="firstname" placeholder="firstname" required autofocus)
+                    .msg.hide#firstname
+                div.form-group
+                    label(for="lastname") Last Name
+                    input.form-control(type="text",name="lastname" placeholder="lastname" required)
+                    .msg.hide#lastname
+                div.form-group
+                    label(for="email") Oasis Email Address
+                    input.form-control(type="email",name="email" placeholder="email" required)
+                    .msg.hide#email
+                div.form-group    
+                    label(for="password") Password
+                    input.form-control(type="password",name="password" placeholder="Password" required)
+                    .msg.hide#password
+                div.form-group    
+                    label(for="confirmpassword") Confirm Password
+                    input.form-control#cpw(type="password",name="confirmpassword" placeholder="Confirm Password" required)
+                    .msg.hide#confirmpassword
+                div.form-group
+                    div(class="text-right") 
+                        button.btn.btn-primary(type="submit" value="Register") Register
+    script

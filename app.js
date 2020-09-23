@@ -1,23 +1,67 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const session = require ('express-session');
+const nedbStorage = require ('tch-nedb-session') (session);
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const csurf = require('csurf')
+const logger = require('morgan');
 
-var indexRouter = require('./routes/home/index');
-var usersRouter = require('./routes/home/users');
+require('dotenv').config();
 
-var app = express();
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/auth/users');
+const api = require('./routes/api/api');
 
+// Used to sync part.db with plex api
+const { getPartNumbers } = require('./models/fetchPlexAPI');
+const timeInterval = 1000 * 60 * 60 * 12;
+setInterval(() => {
+	getPartNumbers()
+}, timeInterval );
+
+// setTimeout(() => {
+// 	getPartNumbers()
+// }, 10000 );
+
+const app = express();
+app.use('/api', api);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 app.use(logger('dev'));
+
+
+
+let expiration = 24 * 60 * 60 * 1000;
+let sessionStore = new nedbStorage ({
+	filename: './models/sessions.db',
+	expiration: expiration,
+	expirationType: 'interval',
+	autoCompactInterval: 15 * 60 * 1000,
+	expirationInterval: 24 * 60 * 60 * 1000,
+	user: '',
+});
+
+app.use (session ({
+	secret: process.env.SESSION_SECRET,
+	cookie: {
+		maxAge: expiration,
+		user: '',
+	},
+	resave: false,
+	saveUninitialized: false,
+	store: sessionStore
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(csurf());
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

@@ -1,0 +1,29 @@
+extends layout
+
+block content
+    div.wrapper.container
+        div.form-signin(id='login')
+            form(action="/users/login" method="post")
+                input.validityChecked(type="hidden", name="_csrf", value=csrfToken)
+                div.form-group(style: {text-align:'center'})
+                    h2 Sign In
+                if error 
+                    div(class="alert alert-danger" role='alert') #{error}
+                div.form-group
+                    label(for="email") Email
+                    input.form-control(type="email",name="email" placeholder="Email" autofocus)
+                    .msg.hide#email
+                div.form-group    
+                    label(for="password") Password
+                    input.form-control(type="password",name="password" placeholder="Password")
+                    .msg.hide#password
+                div.form-group 
+                    div(class="text-right")
+                        button.btn.btn-standard(type="submit" value="Sign in") Sign-In
+                        div.stay-signed-in
+                            label Remember me 
+                            input(type="checkbox")
+                         
+                //- div.form-group
+                //-     div.text-right
+                //-         input.btn.btn-primary(type="submit" value="Sign in")

@@ -1,0 +1,34 @@
+.nav.container
+    .nav-btn
+        a.nav-link(href='/') Home
+    if user
+        .nav-btn
+            a.nav-link(href='/dashboard') Dashboard
+
+    .nav-btn
+        a.nav-link(href='http://oasiswebserver.oasis2m19.local:3001/csv' target="_blank") Fault Troubleshooter
+
+    .nav-btn
+        a.nav-link(href='http://oasiswebserver.oasis.local/oasis/' target="_blank") Oasis.Local
+
+    .nav-btn
+        a.nav-link(href='http://oasiscws.com' target="_blank") OasisCWS.com
+
+    //- .nav-btn(id="toggle-color") Toggle Theme
+
+    if !user
+        .nav-btn
+            a.nav-link(href='/users/login') Sign-In
+    if user
+        .nav-btn
+            form(action="/users/logout" method="post")
+                input.validityChecked(type="hidden", name="_csrf", value=csrfToken)
+                button.btn-standard Sign-Out
+    if !user
+        .nav-btn
+            a.nav-link(href='/users/register') Register Account
+    if user
+        H5(style="display: inline; float: right;") Welcome back, #{user.firstname} #{user.lastname}
+        input(type='hidden', name='userId', value=user._id)
+    //- .nav-btn.toggle-form
+    //-     include ../images/circle-plus.svg

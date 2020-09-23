@@ -1,0 +1,22 @@
+div.search-wrapper(style="display: none; padding: 1rem")
+    div.search-modal.container
+        div.search-header.search-parts
+            div
+                h2 Parts Search
+            div
+                .btn-div
+                    button.btn.btn-standard#btn-close-modal(value="X") X
+        //- hr(style="display: block; margin: auto; ")
+        div.search-box.search-parts
+            div.partnumbersearch.searchinputs
+                label(for="number-search" style="display: block") Part Number
+                input.search-field(type="search" id='number-search' name='number-search')
+            div.partdescsearch.searchinputs
+                label(for="desc-search" style="display: block") Part Description
+                input.search-field(type="search" id='desc-search' name='desc-search')
+        div.search-body.search-parts
+            div.part-num-display.searchinputs(id="n-search")
+                //- ul(id='n-search' name='n-search')
+            //- div.part-desc-display.searchinputs(id="d-search")
+                //- ul(id='d-search' name='d-search')
+                    

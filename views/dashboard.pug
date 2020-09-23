@@ -1,0 +1,99 @@
+extends layout
+
+block content
+    .main
+        section.teleform
+            div.container.main-form
+                div.form1-header(style="margin-top: 1rem")
+                    div
+                        h2(style="padding-left: 1rem") Technical Support Entry Form
+                    div
+                        //- if user
+                            //- H5(style="display: inline; float: right;") Welcome back, #{`${user.firstname} ${user.lastname}`}
+                    div(style="display: inline-block; position: relative; ")
+                        button.btn-standard.open-hidden(style="position: absolute; top: 50%; transform: translateY(-50%); left: 50%;") New Entry
+                if error 
+                    div(class="alert alert-danger" role='alert') #{error}
+                div.form-wrapper
+                    form.entry-form(action="/dashboard" method="post")
+                        div.form-section.hidden
+                            div.form-group
+                                label(for="ticket-number") Ticket Number
+                                input.form-control(type="text",name="ticket-number" placeholder="Auto Generated" disabled)
+                                .msg.hide#ticket-number
+                            div.form-group
+                                label(for="Created-At") Timestamp
+                                input.form-control(type="text",name="Created-At" placeholder="Auto Generated" disabled)
+                                div.msg.hide#Created-At
+                            div.form-group
+                                label(for="Created-By") Created By
+                                input.form-control(type="text",name="Created-By" placeholder="Auto Generated" disabled)
+                                div.msg.hide#Created-By
+                        div.form-section.hidden
+                            div.form-group
+                                //- label.inline-label(for="status-resolved") Resolved
+                                span Resolved
+                                    input.form-control(type="checkbox", name="status-resolved", value="Resolved")
+                                .msg.hide#status-resolved
+                            div.form-group
+                                //- label.inline-label(for="status-pending") Pending
+                                span Pending
+                                    input.form-control(type="checkbox",name="status-pending")
+                                .msg.hide#status-pending
+                        div.form-section.hidden
+                            div.form-group
+                                label(for="contact-name") Contact Name
+                                input.form-control(type="text",name="contact-name" placeholder="Created Name")
+                                div.msg.hide#contact-name
+                            div.form-group
+                                label(for="contact-phone") Contact phone
+                                input.form-control(type="text",phone="contact-phone" placeholder="Contact Phone Number")
+                                div.msg.hide#contact-phone
+                        div.form-section.hidden
+                            div.form-group
+                                label(for="job-number") Job Number
+                                input.form-control(type="text",name="job-number" placeholder="Job Number" required)
+                                div.msg.hide#job-number
+                            div.form-group
+                                label(for="machine-type") Machine Type
+                                input.form-control(type="text",name="machine-type" placeholder="Machine Type" list="machineList" required)
+                                div.msg.hide#machine-type
+                                datalist#machineList
+                            div.form-group
+                                label(for="total-washes") Total Washes
+                                input.form-control(type="text",name="total-washes" placeholder="Total Washes")
+                                div.msg.hide#total-washes
+                        div.form-section.hidden
+                            div.form-group
+                                label(for="problem-catagory") Problem-Catagory
+                                input.form-control.wid-100(type="text",name="problem-catagory" placeholder="Problem-Catagory" list="problemList")
+                                div.msg.hide#problem-catagory
+                                datalist#problemList
+                            div.form-group.part-input
+                                label(for="parts-needed") Parts Needed
+                                .search
+                                    include ./images/magnifingGlass.svg
+                                input.form-control.wid-100(type="text",name="parts-needed" placeholder="Enter just the part number using comma seperated values")
+                                
+                                div.msg.hide#parts-needed
+                            div.form-group.part-input
+                                label(for="parts-missing") Parts Missing
+                                .search
+                                    include ./images/magnifingGlass.svg
+                                input.form-control.wid-100(type="text",name="parts-missing" placeholder="Enter just the part number using comma seperated values")
+                                div.msg.hide#parts-missing
+                            div.form-group.wid-100
+                                label(for="resolution") Resolution
+                                textarea.form-control(rows="10" type="text",name="resolution" placeholder="" style="width: 100%; max-width: 100%; height: 100px; max-height: 100px; resize: none; overflow-y: scroll")
+                                div.msg.hide#resolution
+                        div.form-section.hidden
+                            div.form-group.wid-100
+                                label(for="notes" ) Notes
+                                textarea.form-control.wid-100(type="text",name="notes" placeholder="Notes" style="width: 100%; max-width: 100%; height: 100px; max-height: 100px; resize: none; overflow-y: scroll")
+                                div.msg.hide#notes
+                        div.form-section.hidden
+                            div.form-group
+                                div(class="text-right") 
+                                    button.btn.btn-standard(type="submit" value="Submit") Submit
+            include ./includes/searchModal
+        section.grid
