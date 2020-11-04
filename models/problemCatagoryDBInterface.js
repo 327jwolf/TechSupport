@@ -1,4 +1,4 @@
-var { db } = require('./techInfo');
+var { db } = require('./techInfoInterface');
 
 function addProblemCatagory(problemCatagoryObj) {
     return new Promise((resolve, reject) => {

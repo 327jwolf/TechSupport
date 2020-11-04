@@ -4,7 +4,7 @@ const { Result } = require('express-validator');
 db = {}
 
 db.autoIncrement = new Datastore({ filename: './models/autoIncrement.db', autoload: true });
-db.techInfo = new Datastore({ filename: './models/techInfo.db', autoload: true });
+db.techInfo = new Datastore({ filename: './models/techInfoInterface.db', autoload: true });
 db.techContacts = new Datastore({ filename: './models/techContacts.db', autoload: true });
 db.machineTypes = new Datastore({ filename: './models/machineTypes.db', autoload: true });
 db.users = new Datastore({ filename: './models/users.db', autoload: true });

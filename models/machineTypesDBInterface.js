@@ -1,4 +1,4 @@
-var { db } = require('./techInfo');
+var { db } = require('./techInfoInterface');
 
 function addMachineType(machineTypeObj) {
     return new Promise((resolve, reject) => {

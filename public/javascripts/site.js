@@ -5,25 +5,25 @@ const domIsReady = function(callback) {
 };
 
 domIsReady (function() {
-    let re = /(\/[a-zA-Z]+|(\/))/ 
-    let urlLocation = window.location.href.slice(7).match(re)
+    let re = /(\/[a-zA-Z]+|(\/))/ ;
+    let urlLocation = window.location.href.slice(7).match(re);
 
-    let reg = /([a-z]+:\/\/[a-zA-Z0-9:]+)|(\/[a-zA-Z0-9]+)+/
-    let trailingPath = window.location.href.split('/')//.match(reg)
+    let reg = /([a-z]+:\/\/[a-zA-Z0-9:]+)|(\/[a-zA-Z0-9]+)+/;
+    let trailingPath = window.location.href.split('/');//.match(reg)
     // console.log(`/${trailingPath.slice(3, ).join('/')}`)
     // console.log(window.location.origin)
 
-    let nav = document.querySelector(".nav")
-    let navLinks = nav.querySelectorAll('.nav-link')
-    Array.from(navLinks).forEach(element => {
+    let nav = document.querySelector(".nav");
+    let navLinks = nav.querySelectorAll('.nav-link');
+    [...navLinks].forEach(element => {
 
         if (element.getAttribute("href") === `/${trailingPath.slice(3, ).join('/')}`) {
-            element.parentNode.style.backgroundColor = '#909090'
+            element.parentNode.style.backgroundColor = '#909090';
         }
         else {
-            element.parentNode.style.backgroundColor = ''
+            element.parentNode.style.backgroundColor = '';
         }
-    })
+    });
 
     let scrollLocation;
 
@@ -93,115 +93,114 @@ domIsReady (function() {
     const validateField = {
         getMessages: function (field) {
             const msgs = []
-            msgs.push(validateField.lengthCheck(field, { min: 6, max: 8 }))
-            msgs.push(validateField.lowercaseCheck(field))
-            msgs.push(validateField.uppercaseCheck(field))
-            msgs.push(validateField.numberCheck(field))
-            msgs.push(validateField.specialCharactersCheck(field))
-            msgs.push(validateField.repeatCharactersCheck(field))
-            return msgs
+            msgs.push(validateField.lengthCheck(field, { min: 6, max: 8 }));
+            msgs.push(validateField.lowercaseCheck(field));
+            msgs.push(validateField.uppercaseCheck(field));
+            msgs.push(validateField.numberCheck(field));
+            msgs.push(validateField.specialCharactersCheck(field));
+            msgs.push(validateField.repeatCharactersCheck(field));
+            return msgs;
         },
         characterTypeCheck: function (field, regex, type) {
-            const matches = field.match(regex) || []
+            const matches = field.match(regex) || [];
           
             if (matches.length === 0) {
               return {
                 message: `Your password has no ${type}`,
                 checkOk: false
-              }
+              };
             }
           
             if (matches.length < 1) {
               return {
                 message: `Your password could use more ${type}`,
                 checkOk: false
-              }
+              };
             }
             return {
                 message: '',
                 checkOk: field !== "" ? true : false
-            }
+            };
         },
         lengthCheck: function(field, {min = 2, max = 6}) {
-            const length = field.length
+            const length = field.length;
             
             if (field == undefined) {
                 return {
                 message: `This field must contain at least ${max} characters`,
                 checkOk: ''
-                }
+                };
             }
             
             if (length < max) {
                 return {
                 message: `This field must contain at least ${max} characters`,
                 checkOk: false
-                }
+                };
             }
             return {
                 message: '',
                 checkOk: true
-            }
+            };
         },
         uppercaseCheck: function(field) {
-            return validateField.characterTypeCheck(field, /[A-Z]/g, 'uppercase characters')
+            return validateField.characterTypeCheck(field, /[A-Z]/g, 'uppercase characters');
         },
         lowercaseCheck: function(field) {
-            return validateField.characterTypeCheck(field, /[a-z]/g, 'lowercase characters')
+            return validateField.characterTypeCheck(field, /[a-z]/g, 'lowercase characters');
         },
         numberCheck: function(field) {
-            return validateField.characterTypeCheck(field, /[0-9]/g, 'numbers')
+            return validateField.characterTypeCheck(field, /[0-9]/g, 'numbers');
         },
         specialCharactersCheck: function(field) {
-            return validateField.characterTypeCheck(field, /[^0-9a-zA-Z\s]/g, 'special characters')
+            return validateField.characterTypeCheck(field, /[^0-9a-zA-Z\s]/g, 'special characters');
         },
         repeatCharactersCheck: function(field) {
-            const matches = field.match(/(.)\1/g) || []
+            const matches = field.match(/(.)\1/g) || [];
             if (matches.length > 0) {
                 return {
                 message: 'Your password has repeat characters',
                 checkOk: false
-                }
+                };
             }
             return {
                 message: '',
                 checkOk: field !== "" ? true : false
-            }
+            };
         },
         matchCharacters: function(field) {
-            const matches = field.match(/[^A-Za-z\.\'\-0-9]+/g) || []
+            const matches = field.match(/[^A-Za-z\.\'\-0-9]+/g) || [];
             if (matches.length > 0) {
                 return {
                 message: 'Field contains illegal characters, only A-Za-z0-9.\' allowed',
                 checkOk: false
-                }
+                };
             }
             return {
                 message: '',
                 checkOk: field !== "" ? true : false
-            }
+            };
         },
         matchEmailDomain: function(field) {
-            const matches = field.match(/@oasiscws.com/g) || []
-            // console.log(matches)
+            const matches = field.match(/@oasiscws.com/g) || [];
             if (matches.length === 0) {
                 return {
                 message: 'Only the @oasiscws.com domain is allowed.',
                 checkOk: false
-                }
+                };
             }
             return {
                 message: '',
                 checkOk: field !== "" ? true : false
-            }
+            };
         },
         matchEmail: function(field) {
-            const matches = field.match(/[a-zA-Z0-9\_\-\.\+]+@oasiscws.com/g) || [] // !#$%&'*+-/=?^_`{|}~ [^_-\.\+]
+            const matches = field.match(/[a-zA-Z0-9\_\-\.\+]+@oasiscws.com/g) || []; // !#$%&'*+-/=?^_`{|}~ [^_-\.\+]
             if (matches.length === 0) {
                 return {
                 message: 'Email not valid format at this point.',
                 checkOk: false
-                }
+                };
             }
             return {
                 message: '',
@@ -213,29 +212,29 @@ domIsReady (function() {
                 return {
                 message: 'Confirm password does not match password.',
                 checkOk: false
-                }
+                };
             }
             return {
                 message: '',
                 checkOk: confirmfield !== "" ? true : false
-            }
+            };
         },
     }
 
     function messagesToElements(el, msgs) {
-        el.target.nextElementSibling.innerHTML = ''
+        el.target.nextElementSibling.innerHTML = '';
         msgs.forEach(msg => {
             if(msg.message !== '') {
-                const messageEl = document.createElement('div')
-                messageEl.innerText = msg.message
-                el.target.nextElementSibling.appendChild(messageEl)
+                const messageEl = document.createElement('div');
+                messageEl.innerText = msg.message;
+                el.target.nextElementSibling.appendChild(messageEl);
             }
-        })
+        });
     }
 
     function validatePwField(e) {
-        const msgs = validateField.getMessages(e.target.value)
-        messagesToElements(e, msgs)
+        const msgs = validateField.getMessages(e.target.value);
+        messagesToElements(e, msgs);
     }
 
 /*******************************************************************/
@@ -244,29 +243,29 @@ domIsReady (function() {
         let registerForm = document.querySelector('#register');
         let registerSubmitBtn = registerForm.querySelector('.btn');
         let registerInputCollection = registerForm.querySelectorAll('.form-control');
-        let passwordInput = registerForm.querySelector('input[name="password"]')
+        let passwordInput = registerForm.querySelector('input[name="password"]');
         
-        registerSubmitBtn.disabled = true
+        registerSubmitBtn.disabled = true;
 
         const validForm = () => {
-            let formOKtoSubmit = Array.from(registerForm.querySelectorAll('input')).map(el => el.classList.contains('validityChecked') ? 'true' : 'false').includes('false')
+            let formOKtoSubmit = Array.from(registerForm.querySelectorAll('input')).map(el => el.classList.contains('validityChecked') ? 'true' : 'false').includes('false');
             if(formOKtoSubmit){
-                registerSubmitBtn.disabled = true
+                registerSubmitBtn.disabled = true;
             }else{
-                registerSubmitBtn.disabled = false
+                registerSubmitBtn.disabled = false;
             }
         }
 
         
-        Array.from(registerInputCollection).forEach(el => {
+       [... registerInputCollection].forEach(el => {
             
             el.addEventListener('keyup', (el) => {
                 if (el.target.value !== "" && el.target.nextElementSibling.innerHTML === "") {
-                    el.target.classList.add("validityChecked")
+                    el.target.classList.add("validityChecked");
                 } else {
-                    el.target.classList.remove("validityChecked")
+                    el.target.classList.remove("validityChecked");
                 }
-                validForm()
+                validForm();
             });
             if (el.getAttribute('name') === 'password') {
                 el.addEventListener('input', validatePwField);
@@ -275,7 +274,7 @@ domIsReady (function() {
                         validatePwField(el);
                     }
                     
-                })
+                });
             }
 
             if (el.getAttribute('name') === 'firstname' || el.getAttribute('name') === 'lastname') {
@@ -283,19 +282,19 @@ domIsReady (function() {
                     let msgs = [
                         validateField.lengthCheck(el.target.value, {min: 1, max: 3}),
                         validateField.matchCharacters(el.target.value)
-                    ]
+                    ];
                     messagesToElements(el, msgs);
-                })
+                });
                 el.addEventListener('mouseenter', (el) => {
                     if (!el.target.classList.contains('validityChecked')) {
                         let msgs = [
                             validateField.lengthCheck(el.target.value, {min: 1, max: 3}),
                             validateField.matchCharacters(el.target.value)
-                        ]
+                        ];
                         messagesToElements(el, msgs);
                     }
                     
-                })
+                });
             }
 
             if (el.getAttribute('name') === 'email') {
@@ -321,7 +320,7 @@ domIsReady (function() {
                 el.addEventListener('input', (el) => {
                     let msgs = [
                         validateField.confirmPassword(el.target.value, passwordInput.value)
-                    ]
+                    ];
                     messagesToElements(el, msgs);
                 });
                 el.addEventListener('mouseenter', (el) => {
@@ -346,7 +345,6 @@ domIsReady (function() {
 
 
     function validateLoginForm() {
-        console.log('validateLoginForm');
         let loginForm = document.querySelector('#login');
         let loginSubmitBtn = loginForm.querySelector('.btn');
         let loginEmail = loginForm.querySelector('input[name="email"]');
@@ -355,7 +353,7 @@ domIsReady (function() {
         loginSubmitBtn.disabled = true;
 
         const validForm = () => {
-            let formOKtoSubmit = Array.from([loginEmail, passwordInput]).map(el => el.classList.contains('validityChecked') ? 'true' : 'false').includes('false')
+            let formOKtoSubmit = Array.from([loginEmail, passwordInput]).map(el => el.classList.contains('validityChecked') ? 'true' : 'false').includes('false');
             if(formOKtoSubmit){
                 loginSubmitBtn.disabled = true
             }else{
@@ -363,13 +361,13 @@ domIsReady (function() {
             }
         }
 
-        Array.from([loginEmail, passwordInput]).forEach(el => {
+        [loginEmail, passwordInput].forEach(el => {
             
             el.addEventListener('keyup', (el) => {
                 if (el.target.value !== "" && el.target.nextElementSibling.innerHTML === "") {
-                    el.target.classList.add("validityChecked")
+                    el.target.classList.add("validityChecked");
                 } else {
-                    el.target.classList.remove("validityChecked")
+                    el.target.classList.remove("validityChecked");
                 }
                 validForm()
             });
@@ -380,7 +378,7 @@ domIsReady (function() {
                         validatePwField(el);
                     }
                     
-                })
+                });
             }
 
             if (el.getAttribute('name') === 'email') {
@@ -411,27 +409,43 @@ domIsReady (function() {
     }
 
     if (trailingPath.includes('dashboard')) {
-        supportForm()
+        supportForm();
     }
 
+    
     function supportForm(){
         // Main form Selectors
         const entryFormOpen = document.querySelector('.open-hidden');
         const entryFormWrapper = document.querySelector('.form-wrapper');
         const entryForm = entryFormWrapper.querySelector('.entry-form')
-        const createdBy = entryFormWrapper.querySelector('input[name=Created-By]');
-        const ticketNumber = entryFormWrapper.querySelector('input[name=ticket-number]');
+        const createdBy = entryFormWrapper.querySelector('input[name=CreatedBy]');
+        const createdAt = entryFormWrapper.querySelector('input[name=CreatedAt]');
+
+        const ticketNumber = entryFormWrapper.querySelector('input[name=ticketnumber]');
         const machineList = entryFormWrapper.querySelector('#machineList');
         const problemList = entryFormWrapper.querySelector('#problemList');
         const partsneeded = entryFormWrapper.querySelector('#pn');
-        const partsmissing = entryFormWrapper.querySelector('#pm');
+        // const statusRadioBtn = entryFormWrapper.querySelectorAll('#resolved-pending input[type=radio]');
+        // const partsRadioBtn = entryFormWrapper.querySelectorAll('#missing-needed input[type=radio]');
 
-        // Search Pop-up Selectors
+        // [... statusRadioBtn].forEach(radioBtn => {
+        //     radioBtn.addEventListener('click', e => {
+                
+        //     })
+        // });
+        
+        // [... partsRadioBtn].forEach(radioBtn => {
+        //     radioBtn.addEventListener('click', e => {
+                
+        //     })
+        // }); 
+
+         // Search Pop-up Selectors
         const searchModal = document.querySelector('.search-wrapper');
         const searchFields = searchModal.querySelectorAll('.search-field');
         const bodyNumTarget = searchModal.querySelector('#n-search');
         const btnCloseSearchModal = searchModal.querySelector('#btn-close-modal');
-        
+
         setSelectMenus('/api/machinetypes/all', machineList, 'machinename', `machineType`);
         setSelectMenus('/api/problemcatagory/all', problemList, `catagoryname`);
 
@@ -443,42 +457,40 @@ domIsReady (function() {
                 entryFormWrapper.style.display = 'block';
                 getTicketNumber(ticketNumber);
                  createdBy.value = getUserId();
+                 let now = new Date();
+                 createdAt.value = now.toUTCString();
             }
         })
 
         function closeSearchModal(e){
             searchModal.style.display = 'none';
             bodyNumTarget.innerHTML = ``;
-            Array.from(searchModal.querySelectorAll('.search-field')).forEach(item => item.value = "")
+            Array.from(searchModal.querySelectorAll('.search-field')).forEach(item => item.value = "");
         }
 
         btnCloseSearchModal.addEventListener('click', closeSearchModal);
 
-        let selectedSearchDiv = "";
-
         partsneeded.addEventListener('click', getPartsSearch);
-        partsmissing.addEventListener('click', getPartsSearch);
 
-        async function getPartsSearch(elMagGlass) {
-            // elMagGlass.stopPropagation();
+        function getPartsSearch(elMagGlass) {
             elMagGlass.preventDefault();
-            selectedSearchDiv = this.parentNode.querySelector('input')//elMagGlass.target.parentNode;
             searchModal.style.display = 'block';
         }
-
-        Array.from(searchFields).forEach(input => {
+        let j = 1;
+        [... searchFields].forEach(input => {
             input.addEventListener('input', async(inputEl)=>{
                 inputEl.preventDefault();
                 // inputEl.stopPropagation();
                 let searchParameter = inputEl.target.value;
                 let apiUrl = inputEl.target.getAttribute('id') === 'number-search' ? 'pn' : 'desc';
 
-                let timer
-                bodyNumTarget.innerHTML = ``
-                clearTimeout(timer)
-                if (searchParameter === "*" || searchParameter.length > 2) {
+                let timer;
+                bodyNumTarget.innerHTML = ``;
+                clearTimeout(timer);
+                if (searchParameter === "*" || searchParameter.length > 3) {
                     timer = setTimeout(async ()=>{
-                        bodyNumTarget.innerHTML = ``
+                        bodyNumTarget.innerHTML = ``;
+                        
                         const lookupResult = await getData(`${window.location.origin}/api/parts/${apiUrl}/${searchParameter}`, 'GET', {data: 'yes'})
                         .then(res => {
                             res.forEach((item, i) => {
@@ -492,8 +504,28 @@ domIsReady (function() {
                                 }
 
                                 elContainer.addEventListener('click', (e) => {
-                                    selectedSearchDiv.value = `${item.partNumber} ${item.description}`;
-                                    closeSearchModal()
+                                    let inputField = '';
+                                    let htmlPartsSection = `
+                                        <li id="part-li${j}">
+                                            <div class="gc3" id="parts-div${j}">
+                                                <input class="form-control w50" id="inputParts-${j}" type="text" name="parts[${j}][part]" placeholder="Enter just the part number using comma seperated values">
+                                                <input type="radio" id="missing-${j}" name="parts[${j}][status]" value="Missing">
+                                                <label class="inline-label" for="missing-${j}">Missing</label>
+                                                <input type="radio" id="needed-${j}" name="parts[${j}][status]" value="Needed" checked >
+                                                <label class="inline-label" for="needed-${j}">Needed</label>
+                                                <button class="btn" id="remove-btn${j}">Remove</button>
+                                            </div>
+                                        </li>
+                                    `;
+                                    partsneeded.nextSibling.insertAdjacentHTML('beforeend', htmlPartsSection);
+                                    inputField = document.querySelector(`#inputParts-${j}`);
+                                    removeBtn = document.querySelector(`#remove-btn${j}`);
+                                    removeBtn.addEventListener('click', e => inputField.parentNode.parentNode.remove())
+                                    inputField.value = `${item.partNumber} - ${item.description}`;
+                                    j++;
+                                    document.querySelector('#number-search').value = '';
+                                    document.querySelector('#desc-search').value = '';
+                                    // closeSearchModal();
                                 })
 
                                 bodyNumTarget.appendChild(elContainer);
@@ -512,11 +544,12 @@ domIsReady (function() {
                             })
                             
                         })
-                        .catch(e => console.log(`Error getData: ${e}`))
-                    },250)
+                        .catch(e => console.error(`Error getData: ${e}`))
+                    },350);
                 }
-            })
-        })
+            });
+        });
+    
     }
 
 /*******************************************************************/
@@ -524,9 +557,9 @@ domIsReady (function() {
     async function getTicketNumber (ticketNumEL) {
         try {
             const result = await getData(`${window.location.origin}/autoinc`, 'GET', {data: 'yes'});
-            ticketNumEL.value = await result    
+            ticketNumEL.value = await result;    
         } catch (error) {
-            console.log(error)
+            console.error(error);
         }
     }
 
@@ -538,9 +571,9 @@ domIsReady (function() {
                 let opt = document.createElement('option');
                 opt.value = `${type[typeValue1]}  ${type[typeValue2] ? type[typeValue2] : ""}`;
                 selector.appendChild(opt); 
-            })
+            });
         })
-        .catch(e => console.log(e))
+        .catch(e => console.error(e));
     }
 
     function getUserId(){

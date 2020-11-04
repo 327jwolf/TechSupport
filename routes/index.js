@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { genericDBFunctions, getAutoIncrementValue} = require('../models/techInfo.js');
+const { getAutoIncrementValue} = require('../models/techInfoInterface.js');
 const { findOneUser } = require('../models/usersDBInterface.js');
 
 const { redirectLogin } = require('../middleware/auth');
@@ -32,6 +32,17 @@ router.get('/dashboard', redirectLogin,  async function(req, res, next){
       });
   } catch (error) {
     throw 'user not found'
+  }
+  
+})
+
+router.post('/dashboard', function(req, res, next){
+  try {
+    console.log(req.body)
+    console.log(req.body['Created-At'])
+    res.redirect('/dashboard');
+  } catch (error) {
+    throw 'error occurred'
   }
   
 })

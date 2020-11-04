@@ -20,9 +20,8 @@ setInterval(() => {
 	getPartNumbers()
 }, timeInterval );
 
-// setTimeout(() => {
-// 	getPartNumbers()
-// }, 10000 );
+// getPartNumbers();
+
 
 const app = express();
 app.use('/api', api);

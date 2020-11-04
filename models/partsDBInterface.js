@@ -1,4 +1,4 @@
-var { db } = require('./techInfo');
+var { db } = require('./techInfoInterface');
 
 
 
@@ -21,6 +21,24 @@ function findPart(partNumber) {
                 resolve(doc)
             } catch (err) {
                 reject(err)
+            }
+        })
+    })
+}
+
+function updatePartDescription(partNumber, description) {
+    return new Promise((resolve, reject) => {
+        // console.log(`partNumber: ${partNumber}, Description: ${description}`)
+        db.parts.update({partNumber: partNumber}, { $set: { description: description } }, {returnUpdatedDocs: true, multi: false},(err, numaffected, doc) => {
+            // try {
+            //     resolve({numaffected ,doc})
+            // } catch (err) {
+            //     reject(err)
+            // }
+            if (err) {
+                reject(err)
+            } else {
+                resolve({numaffected ,doc})
             }
         })
     })
@@ -90,4 +108,5 @@ module.exports = {
     findByPartNumber,
     addPart,
     getPartbyDescription,
+    updatePartDescription
   };
