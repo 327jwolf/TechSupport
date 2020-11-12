@@ -1,0 +1,47 @@
+div.form-section.gc-r1
+    input(type="text",name="contactid" placeholder="Contact ID" hidden)
+    div.form-group
+        label(for="contact-name") Contact Name
+        input.form-control.w95(type="text",name="contactname" placeholder="Created Name")
+        div.msg.hide#contact-name
+    div.form-group
+        div.inline-label.w30 
+            label(for="contact-cc") CC
+            select.w100.form-control(type="text", id= "contact-cc", name="contactcc" placeholder="CC" )
+                option(value= "+1") United States: +1 
+                each val, index  in countryCodes
+                    option(value= val.Dial) #{index}: #{val.Dial} 
+        div.inline-label.w60(style="margin-left: 10px;")   
+            label(for="contact-phone") Phone
+            input.w100.form-control(type="text", name="contactphone" placeholder="Contact Phone Number")
+            //- div.msg.hide#contact-phone
+    div.form-group
+        label(for="email") Email
+        input.form-control.w95(type="text", name="email" placeholder="Email")
+        div.msg.hide#contact-email
+    div.form-group
+        label(for="address") Address
+        input.form-control.w95(type="text", name="address" placeholder="Address")
+        .msg.hide#contact-address
+    div.form-group
+        label(for="city") City
+        input.form-control.w95(type="text", name="city" placeholder="City")
+        div.msg.hide#contact-city
+    div.form-group
+        label(for="state") State
+        input.form-control.w95(type="text", name="state" placeholder="State")
+        div.msg.hide#contact-state
+    div.form-group
+        label(for="country") Country
+        select.w95.form-control(type="text", name="country" placeholder="Country" )
+                option(value= countryCodes['United States'].Iso2) #{countryCodes['United States'].Iso2}: United States #{countryCodes['United States'].Unicode}
+                each val, index  in countryCodes
+                    option(value= val.Iso2) #{val.Iso2}: #{index} #{val.Unicode}
+        .msg.hide#contact-country
+    div.form-group
+        label(for="zip") Zip Code
+        input.form-control.w95(type="text", name="zip" placeholder="Zip Code")
+        .msg.hide#contact-zip
+    div.form-group
+        button.btn-standard.mr1#find-contact Add Contact
+        button.btn-standard#search-contact Find Contact

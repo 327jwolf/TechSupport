@@ -4,7 +4,8 @@ const { Result } = require('express-validator');
 db = {}
 
 db.autoIncrement = new Datastore({ filename: './models/autoIncrement.db', autoload: true });
-db.techInfo = new Datastore({ filename: './models/techInfoInterface.db', autoload: true });
+db.techInfo = new Datastore({ filename: './models/techInfo.db', autoload: true });
+db.techInfoSub = new Datastore({ filename: './models/techInfoSub.db', autoload: true });
 db.techContacts = new Datastore({ filename: './models/techContacts.db', autoload: true });
 db.machineTypes = new Datastore({ filename: './models/machineTypes.db', autoload: true });
 db.users = new Datastore({ filename: './models/users.db', autoload: true });
@@ -46,26 +47,98 @@ function getAutoIncrementValue(dbase, catagory){
 }
 
 const techInfoDoc = {
-    'ticketNum': '', // auto increment
+    'ticketnumber': '', // auto increment
     'createdAt': '', // date
     'createdBy': '', // created by user user   
     'jobNumber': '', // job number assigned to machine
-    'contact': '', // person who called in tie to techContacts.db
-    'contactPhoneNumber': '', // tie to techContacts.db
     'machineType': '', // tie to machineTypes.db
-    'numberOfWashes': '', // total from machine counts
-    'problemCatagory': '', // tie to problemCatagory.db
+    'totalwashes': '', // total from machine counts
+    
+}
+
+const techInfoSubDoc = {
+    'ticketnumber': '',
+    'contactname': '', // person who called in tie to techContacts.db
+    'contactphone': '', // tie to techContacts.db
+    'ticketstatus': '',
+    'problemcatagory': '', // tie to problemCatagory.db
     'resolution': '', // 
-    'partsNeeded': '', //
-    'partsMissing': '', //
+    'partsneeded': '', //
+    'partsmissing': '', //
     'notes': '', //
 }
 
+function insertTechInfo(techInfoObj) {
+    return new Promise((resolve, reject) => {
+        db.techInfo.insert(techInfoObj, (err, docs) => {
+            try {
+                resolve(docs)
+            } catch (err) {
+                reject(err)
+            }
+        })
+    })
+}
 
+function findAllTechInfo() {
+    return new Promise((resolve, reject) => {
+        db.techInfo.find({}, (err, docs) => {
+            try {
+                resolve(docs)
+            } catch (err) {
+                console.error('techInfo Interface error', err)
+                reject(err)
+            }
+        })
+    })
+}
+
+function insertTechInfoSub(techInfoSubObj) {
+    return new Promise((resolve, reject) => {
+        db.techInfoSub.insert(techInfoSubObj, (err, docs) => {
+            try {
+                resolve(docs)
+            } catch (err) {
+                reject(err)
+            }
+        })
+    })
+}
+
+function findAllTechInfoSubbyTickerNumber(ticketnumber) {
+    return new Promise((resolve, reject) => {
+        db.techInfoSub.find({ticketnumber: ticketnumber}, (err, docs) => {
+            try {
+                resolve(docs)
+            } catch (err) {
+                console.error('techInfosub Interface error', err)
+                reject(err)
+            }
+        })
+    })
+}
+
+function findAllTechInfoSub() {
+    return new Promise((resolve, reject) => {
+        db.techInfoSub.find({}, (err, docs) => {
+            try {
+                resolve(docs)
+            } catch (err) {
+                console.error('techInfosub Interface error', err)
+                reject(err)
+            }
+        })
+    })
+}
 
 
 
 module.exports = {
     db,
     getAutoIncrementValue,
+    insertTechInfo,
+    findAllTechInfo,
+    insertTechInfoSub,
+    findAllTechInfoSubbyTickerNumber,
+    findAllTechInfoSub,
   };

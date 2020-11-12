@@ -418,8 +418,8 @@ domIsReady (function() {
         const entryFormOpen = document.querySelector('.open-hidden');
         const entryFormWrapper = document.querySelector('.form-wrapper');
         const entryForm = entryFormWrapper.querySelector('.entry-form')
-        const createdBy = entryFormWrapper.querySelector('input[name=CreatedBy]');
-        const createdAt = entryFormWrapper.querySelector('input[name=CreatedAt]');
+        const createdBy = entryFormWrapper.querySelector('input[name=createdBy]');
+        const createdAt = entryFormWrapper.querySelector('input[name=createdAt]');
 
         const ticketNumber = entryFormWrapper.querySelector('input[name=ticketnumber]');
         const machineList = entryFormWrapper.querySelector('#machineList');
@@ -456,9 +456,9 @@ domIsReady (function() {
             }else{
                 entryFormWrapper.style.display = 'block';
                 getTicketNumber(ticketNumber);
-                 createdBy.value = getUserId();
-                 let now = new Date();
-                 createdAt.value = now.toUTCString();
+                createdBy.value = getUserId();
+                let now = new Date();
+                createdAt.value = now; //.toUTCString();
             }
         })
 
@@ -577,7 +577,7 @@ domIsReady (function() {
     }
 
     function getUserId(){
-        const userid = document.querySelector('input[name=userId]');
+        const userid = document.querySelector('input[name=contactid]');
         return userid.value;
     }
     

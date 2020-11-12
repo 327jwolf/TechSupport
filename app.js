@@ -6,6 +6,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const csurf = require('csurf')
 const logger = require('morgan');
+const helmet = require('helmet')
 
 require('dotenv').config();
 
@@ -24,17 +25,17 @@ setInterval(() => {
 
 
 const app = express();
-app.use('/api', api);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+app.use(helmet());
 app.use(logger('dev'));
 
-
+app.use('/api', api);
 
 let expiration = 24 * 60 * 60 * 1000;
 let sessionStore = new nedbStorage ({

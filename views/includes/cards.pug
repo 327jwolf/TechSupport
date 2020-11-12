@@ -1,0 +1,75 @@
+div.cards.mt1
+    each doc in techInfo
+        div.container.mt1
+            div.cards.pt-1.pb-1.pl-1.pr-1
+                div.card-section.form-section.gc-r1#card-head
+                    
+                    div.none#ident fksg;l
+                    div
+                        label Ticket Number:
+                        div.fld.mt1#tick #{doc.ticketnumber}
+                    div
+                        label Created Date:
+                        div.fld.mt1#ts #{doc.createdAt}
+                    div
+                        label Created By:
+                        div.fld.mt1#owner #{doc.createdBy}
+                div.card-section.form-section.gc-r1#machineInfo
+                    div
+                        label Job Number:
+                        div.w100.fld.mt1#jn #{doc.jobnumber}
+                    div
+                        label Machine Type:
+                        div.fld.mt1#mt #{doc.machinetype}
+                    div
+                        label Total Washes:
+                        div.fld.mt1#tw #{doc.totalwashes}
+                each item in techInfoSub
+                    if item.ticketnumber === doc.ticketnumber
+                        div.card-section.form-section.gc-r1
+                            div
+                                label Problem Catagory:
+                                div.fld#probcat #{item.problemcatagory}
+                            div
+                                label Status:
+                                div.fld#stat #{item.ticketstatus}
+                        div.card-section.form-section.gc-r1
+                            div
+                                label Contact Name: 
+                                div.fld.mt1#cn(data-key=`name: ${item.contactname}`) #{item.contactname}
+                            div
+                                label Phone:
+                                div.fld#cntryCode +1
+                                div.fld#tel #{item.contactphone}
+                            div
+                                label Email:
+                                div.fld#em #{item.email}
+                            div
+                                label Address:
+                                div.fld#addr #{item.address}
+                            div
+                                label City:
+                                div.fld#cty #{item.city}
+                            div
+                                label State:
+                                div.fld#st #{item.state}
+                            div
+                                label Country:
+                                div.fld#cntry #{item.country}
+                            div
+                                label Zip:
+                                div.fld#zp #{item.zip}
+                        div.card-section.form-section.gc-r3
+                            div.w100 Parts
+                            each part in item.parts
+                                if part.part !== ""
+                                    div.w100
+                                        div.fld.inline-label.w70#prts #{part.part}
+                                        div.fld.inline-label.w30#stat #{part.status}
+                        div.card-section.form-section.gc-r3 
+                            div.fld#sol #{item.resolution}
+                        div.card-section.form-section.gc-r3
+                            div.fld#xnote #{item.note}
+                        
+
+            

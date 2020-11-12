@@ -17,8 +17,13 @@ function findOneUser (findUserObj) {
     return new Promise((resolve, reject) => {
         db.users.findOne(findUserObj, (err, docs) => {
             try {
-                resolve(docs)
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(docs)
+                }
             } catch (err) {
+                console.error('findOneUser Interface error', err)
                 reject(err)
             }
         })

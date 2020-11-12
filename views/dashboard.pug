@@ -23,12 +23,12 @@ block content
                                 input.form-control.w95(type="text",name="ticketnumber" placeholder="Auto Generated" readonly)
                                 .msg.hide#ticket-number
                             div.form-group
-                                label(for="Created-At") Timestamp
-                                input.form-control.w95(type="text",name="CreatedAt" placeholder="Auto Generated" readonly)
+                                label(for="created-At") Timestamp
+                                input.form-control.w95(type="text",name="createdAt" placeholder="Auto Generated" readonly)
                                 div.msg.hide#Created-At
                             div.form-group
-                                label(for="Created-By") Created By
-                                input.form-control.w95(type="text",name="CreatedBy" placeholder="Auto Generated" readonly)
+                                label(for="created-By") Created By
+                                input.form-control.w95(type="text",name="createdBy" placeholder="Auto Generated" readonly)
                                 div.msg.hide#Created-By
                         div.form-section.gc-r1 
                             div.form-group
@@ -44,15 +44,7 @@ block content
                                 label(for="total-washes") Total Washes
                                 input.form-control.w95(type="text",name="totalwashes" placeholder="Total Washes")
                                 div.msg.hide#total-washes
-                        div.form-section.gc-r1 
-                            div.form-group
-                                label(for="contact-name") Contact Name
-                                input.form-control.w95(type="text",name="contactname" placeholder="Created Name")
-                                div.msg.hide#contact-name
-                            div.form-group
-                                label(for="contact-phone") Contact phone
-                                input.form-control.w95(type="text", name="contactphone" placeholder="Contact Phone Number")
-                                div.msg.hide#contact-phone
+                        
 
                         include ./includes/dashLowerForm.pug
 
@@ -62,3 +54,4 @@ block content
                                     button.btn.btn-standard(type="submit" value="Submit") Submit
             include ./includes/searchModal
         section.grid
+            include ./includes/cards
