@@ -99,8 +99,15 @@ router.post('/dashboard', async function(req, res, next){
   let date = new Date(req.body['createdAt'])
   try {
     const contact = await insertContact({
-        contactname: req.body.contactname,
-        contactphone: req.body.contactphone,
+      'contactname': req.body.contactname,
+      'contactcc': req.body.cc,
+      'contactphone': req.body.contactphone,
+      'email': req.body.email,
+      'address': req.body.address,
+      'city': req.body.city,
+      'state': req.body.state,
+      'country': req.body.country,
+      'zip': req.body.zip,
       })
      console.log(contact) 
   } catch (error) {
@@ -119,14 +126,20 @@ router.post('/dashboard', async function(req, res, next){
   let techInfoSubObj = {
     'ticketnumber': req.body.ticketnumber,
     'contactname': req.body.contactname,
+    'contactcc': req.body.cc,
     'contactphone': req.body.contactphone,
+    'email': req.body.email,
+    'address': req.body.address,
+    'city': req.body.city,
+    'state': req.body.state,
+    'country': req.body.country,
+    'zip': req.body.zip,
     'problemcatagory': req.body.problemcatagory,
     'ticketstatus': req.body.ticketstatus,
     'parts': req.body.parts,
     'resolution': req.body.resolution,
     'notes': req.body.notes,
   }
-  console.log(req.body)
 
   try {
     try {
