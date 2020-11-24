@@ -32,7 +32,30 @@ app.set('view engine', 'pug');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(helmet());
+// app.use(helmet())
+
+app.use(
+	helmet.contentSecurityPolicy({
+		directives: {
+			"default-src": ["'self'"],
+			"base-uri": ["'self'"],
+			"block-all-mixed-content": [],
+			"font-src": ["'self'", 'http:', 'data:'],
+			"frame-ancestors": ["'self'"],
+			"img-src": ["'self'", 'data:'],
+			"object-src": ["'none'"],
+			"script-src": ["'self'"],
+			"script-src-attr": ["'none'"],
+			"style-src": ["'self'", "http: 'unsafe-inline'"],
+			// "upgrade-insecure-requests": [],
+		}
+	})
+);
+
+	
+	
+
+	
 app.use(logger('dev'));
 
 app.use('/api', api);

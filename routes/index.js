@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { getAutoIncrementValue, insertTechInfo, insertTechInfoSub, findAllTechInfo, findAllTechInfoSubbyTickerNumber, findAllTechInfoSub } = require('../models/techInfoInterface.js');
+const { getAutoIncrementValue, insertTechInfo, insertTechInfoSub, findAllTechInfo, findAllTechInfoSub } = require('../models/techInfoInterface.js');
 const { findOneUser } = require('../models/usersDBInterface.js');
 const { insertContact } = require('../models/techContactsInterface.js');
 // const { countryCodes } = require('../middleware/countryCodes.js');
@@ -31,7 +31,6 @@ countryCodes2.sort((a, b) => {
   countryCodes[b] = a
 })
 
-// console.log(countryCodes)
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -64,22 +63,7 @@ router.get('/dashboard', redirectLogin,  async function(req, res, next){
       return 0;
     })
     const techInfoSubs = await findAllTechInfoSub()
-    //   techInfo.map(async (doc) => {
-    //     let tInfoSub = await findAllTechInfoSubbyTickerNumber(doc.ticketnumber).catch(e => console.error('Error finding by ticket number', e))
-    //     return tInfoSub
-    //   }
-    // ))
-    // let obj = []
-
-    // techInfoSubs.forEach(x => {
-    //   let y = x[0].ticketnumber
-    //   let z = {...x}
-    //   delete z.ticketnumber
-    //   obj.push({y, ...z})
-    // })
-
     // console.log(techInfoSubs)
-
     res.render('dashboard', { 
       title: mainTitle,
       user: user,
@@ -97,23 +81,43 @@ router.get('/dashboard', redirectLogin,  async function(req, res, next){
 
 router.post('/dashboard', async function(req, res, next){
   let date = new Date(req.body['createdAt'])
+  const contact = await createContact(req)
+  const techInfoHead = await createTectInfoHead(req)
+  const techInfoSub = await createTechInfoSub(req)
+  // console.log(contact, techInfoHead, techInfoSub)
+  res.redirect('/dashboard');
+})
+
+router.post('/techInfoSubform', async function(req, res, next){
+  let date = new Date(req.body['createdAt'])
+  console.log(req.body)
+  // const contact = await createContact(req)
+  // const techInfoSub = await createTechInfoSub(req)
+  // console.log(contact, techInfoHead, techInfoSub)
+  res.redirect('/dashboard');
+})
+
+async function createContact(req) {
+  let contact = {
+    'contactname': req.body.contactname,
+    'contactcc': req.body.contactcc,
+    'contactphone': req.body.contactphone,
+    'email': req.body.email,
+    'address': req.body.address,
+    'city': req.body.city,
+    'state': req.body.state,
+    'country': req.body.country,
+    'zip': req.body.zip,
+  };
   try {
-    const contact = await insertContact({
-      'contactname': req.body.contactname,
-      'contactcc': req.body.cc,
-      'contactphone': req.body.contactphone,
-      'email': req.body.email,
-      'address': req.body.address,
-      'city': req.body.city,
-      'state': req.body.state,
-      'country': req.body.country,
-      'zip': req.body.zip,
-      })
-     console.log(contact) 
+    const result = await insertContact(contact);
+    return result;
   } catch (error) {
-    console.error('insertContact Error: ', error)
+    console.error('insertContact Error: ', error);
   }
-  
+}
+
+async function createTectInfoHead(req) {
   let techInfoHeadObj = {
     'ticketnumber': req.body.ticketnumber,
     'createdAt': req.body.createdAt,// date.getTime(),
@@ -121,12 +125,20 @@ router.post('/dashboard', async function(req, res, next){
     'jobnumber': req.body.jobnumber,
     'machinetype': req.body.machinetype,
     'totalwashes': req.body.totalwashes
+  };
+  try {
+    const result = await insertTechInfo(techInfoHeadObj);
+    return result;
+  } catch (error) {
+    console.error('Error inserting into techInf db: ', error);
   }
+}
 
+async function createTechInfoSub(req) {
   let techInfoSubObj = {
     'ticketnumber': req.body.ticketnumber,
     'contactname': req.body.contactname,
-    'contactcc': req.body.cc,
+    'contactcc': req.body.contactcc,
     'contactphone': req.body.contactphone,
     'email': req.body.email,
     'address': req.body.address,
@@ -139,28 +151,16 @@ router.post('/dashboard', async function(req, res, next){
     'parts': req.body.parts,
     'resolution': req.body.resolution,
     'notes': req.body.notes,
-  }
-
+    'createdBy': req.body.createdBy,
+    'createdAt': req.body.createdAt,
+  };
   try {
-    try {
-      insertTechInfo(techInfoHeadObj)
-    } catch (error) {
-      console.error('Error inserting into techInf db: ', error)
-    }
-
-    try {
-      insertTechInfoSub(techInfoSubObj)
-    } catch (error) {
-      console.error('Error inserting into techInfSub db: ', error)
-    }
-
-    res.redirect('/dashboard');
+    const result = await insertTechInfoSub(techInfoSubObj);
+    return result;
   } catch (error) {
-    throw 'error occurred'
+    console.error('Error inserting into techInfSub db: ', error);
   }
-  
-})
-
+}
 
 
 module.exports = router;

@@ -1,75 +1,198 @@
-div.cards.mt1
-    each doc in techInfo
-        div.container.mt1
-            div.cards.pt-1.pb-1.pl-1.pr-1
-                div.card-section.form-section.gc-r1#card-head
+div.cardsDiv.mt1
+    each doc, idx in techInfo
+        div.card-div.container.mt1.pb-1.pl-1.pr-1
+            div.cards.pt-1.pb-1
+                div.card-section.form-section.gc-r1(id=`card-head`)
                     
-                    div.none#ident fksg;l
+                    div.none(id=`ident${idx}`) #{doc._id}
                     div
                         label Ticket Number:
-                        div.fld.mt1#tick #{doc.ticketnumber}
+                        div.fld(id=`tick${idx}` data-key=`ticketnumber: ${doc.ticketnumber}`) #{doc.ticketnumber}
                     div
                         label Created Date:
-                        div.fld.mt1#ts #{doc.createdAt}
+                        div.fld(id=`ts${idx}` data-key=`createdAt: ${doc.createdAt}`) #{doc.createdAt}
                     div
                         label Created By:
-                        div.fld.mt1#owner #{doc.createdBy}
-                div.card-section.form-section.gc-r1#machineInfo
+                        div.fld(id=`owner${idx}` data-key=`createdBy: ${doc.createdBy}`) #{doc.createdBy}
+                
                     div
                         label Job Number:
-                        div.w100.fld.mt1#jn #{doc.jobnumber}
+                        div.w100.fld.mt1(id=`jn${idx}` data-key=`jobnumber: ${doc.jobnumber}`) #{doc.jobnumber}
                     div
                         label Machine Type:
-                        div.fld.mt1#mt #{doc.machinetype}
+                        div.fld.mt1(id=`mt${idx}` data-key=`machinetype: ${doc.machinetype}`) #{doc.machinetype}
                     div
                         label Total Washes:
-                        div.fld.mt1#tw #{doc.totalwashes}
+                        div.fld.mt1(id=`tw${idx}` data-key=`totalwashes: ${doc.totalwashes}`) #{doc.totalwashes}
+                    div
+                        button.btn.btn-standard Edit
+                        div.msg.hide.btn-edit(id=`btn-edit-main-form${idx}`)
                 each item in techInfoSub
                     if item.ticketnumber === doc.ticketnumber
-                        div.card-section.form-section.gc-r1
-                            div
-                                label Problem Catagory:
-                                div.fld#probcat #{item.problemcatagory}
-                            div
-                                label Status:
-                                div.fld#stat #{item.ticketstatus}
-                        div.card-section.form-section.gc-r1
-                            div
-                                label Contact Name: 
-                                div.fld.mt1#cn(data-key=`name: ${item.contactname}`) #{item.contactname}
-                            div
-                                label Phone:
-                                div.fld#cntryCode #{item.contactcc}
-                                div.fld#tel #{item.contactphone}
-                            div
-                                label Email:
-                                div.fld#em #{item.email}
-                            div
-                                label Address:
-                                div.fld#addr #{item.address}
-                            div
-                                label City:
-                                div.fld#cty #{item.city}
-                            div
-                                label State:
-                                div.fld#st #{item.state}
-                            div
-                                label Country:
-                                div.fld#cntry #{item.country}
-                            div
-                                label Zip:
-                                div.fld#zp #{item.zip}
-                        div.card-section.form-section.gc-r3
-                            div.w100 Parts
-                            each part in item.parts
-                                if part.part !== ""
-                                    div.w100
-                                        div.fld.inline-label.w70#prts #{part.part}
-                                        div.fld.inline-label.w30#stat #{part.status}
-                        div.card-section.form-section.gc-r3 
-                            div.fld#sol #{item.resolution}
-                        div.card-section.form-section.gc-r3
-                            div.fld#xnote #{item.notes}
+                        .form-section
+                            div.card-section.gc-r1
+                                //- div.none#subident(data-key=`_id: ${item._id}`) #{item._id}
+                                div.none(id=`subident${idx}`) #{item._id}
+                                div
+                                    label Problem Catagory:
+                                    div.fld(id=`probcat${idx}` data-key=`problemcatagory: ${item.problemcatagory}`) #{item.problemcatagory}
+                                div
+                                    label Status:
+                                    div.fld(id=`stat${idx}` data-key=`ticketstatus: ${item.ticketstatus}`) #{item.ticketstatus}
+                                div
+
+                                div
+                                    label Contact Name: 
+                                    div.fld(id=`cn${idx}` data-key=`contactname: ${item.contactname}`) #{item.contactname}
+                                div
+                                    label Phone:
+                                    div.fld.inline-label.w10(id=`cntryCode${idx}` data-key=`contactcc: ${item.contactcc}`) #{item.contactcc}
+                                    div.fld.inline-label.w70(id=`tel${idx}` data-key=`contactphone: ${item.contactphone}`) #{item.contactphone}
+                                div
+                                    label Email:
+                                    div.fld(id=`em${idx}` data-key=`email: ${item.email}`) #{item.email}
+                                div
+                                    label Address:
+                                    div.fld(id=`addr${idx}` data-key=`address: ${item.address}`) #{item.address}
+                                div
+                                    label City:
+                                    div.fld(id=`cty${idx}` data-key=`city: ${item.city}`) #{item.city}
+                                div
+                                    label State:
+                                    div.fld(id=`st${idx}` data-key=`state: ${item.state}`) #{item.state}
+                                div
+                                    label Country:
+                                    div.fld(id=`cntry${idx}` data-key=`country: ${item.country}`) #{item.country}
+                                div
+                                    label Zip:
+                                    div.fld(id=`zp${idx}` data-key=`zip: ${item.zip}`) #{item.zip}
+                                div
+                            div.card-section.gc-r3
+                                div.w100 Parts
+                                each part in item.parts
+                                    if part.part !== ""
+                                        div.w100(style="margin-top: .5rem;")
+                                            div.fld.inline-label.w70#prts(data-key=`part: ${part.part}`) #{part.part}
+                                            div.fld.inline-label.w30#stat(data-key=`status: ${part.status}`) #{part.status}
+                            div.card-section.gc-r3 
+                                div Resolution
+                                div.fld(id=`sol${idx}` data-key=`resolution: ${item.resolution}`) #{item.resolution}
+                            div.card-section.gc-r3
+                                div Notes
+                                div.fld(id=`xnote${idx}` data-key=`notes: ${item.notes}`) #{item.notes}
+                            div.card-section.gc-r3.mt1
+                                button.btn.btn-standard Edit
+                                div.msg.hide.btn-edit(id=`btn-edit-main-form${idx}`)
+            button.btn.btn-standard.addForm(style="margin-left: 2rem; margin-bottom: 1rem;") Add
+            div.subform.none
+                form.add-subform(action="/techInfoSubform", method="post")
+                    div.form-section.gc-r1
+                        div.form-group
+                                label(for="ticket-number") Ticket Number
+                                input.form-control.w95(type="text",name="ticketnumber" placeholder="Auto Generated" readonly) 
+                                .msg.hide(id=`ticket-number${idx}`)
+                        div.form-group
+                            input(type="hidden", name="_csrf", value=csrfToken)
+                        
+                        div.form-group
+                                    label(for="created-By") Created By
+                                    input.form-control.w95(type="text",name="createdBy" placeholder="Auto Generated" readonly)
+                                    div.msg.hide(id=`Created-By${idx}`)
+                    //- include      ./dashLowerForm.pug
+                    div.form-section.gc-r1
+                        div.form-group
+                            label(for="problem-catagory") Problem-Catagory
+                            input.form-control.w95(type="text",name="problemcatagory" placeholder="Problem Catagory" list="problemList")
+                            div.msg.hide(id=`problem-catagory${idx}`)
+                            datalist(id=`problemList${idx}`)
+                        div.form-group.radio#resolved-pending
+                            div(style="display: block; height: 50%;")
+                            input.form-control(type="radio", id=`resolved${idx}`, name="ticketstatus", value="Resolved")
+                            label.inline-label(for="resolved") Resolved
+                            input.form-control(type="radio", id=`pending${idx}`, name="ticketstatus", value="Pending" checked)
+                            label.inline-label(for="pending") Pending
+                    //- include ./contacts.pug
+
+                    div.form-section.gc-r1
+                        input(type="text",name="contactid" placeholder="Contact ID" hidden)
+                        div.form-group
+                            label(for="contact-name") Contact Name
+                            input.form-control.w95(type="text",name="contactname" placeholder="Contact Name")
+                            div.msg.hide(id=`contact-name${idx}`)
+                        div.form-group
+                            div.inline-label.w30 
+                                label(for="contact-cc") CC
+                                select.w100.form-control(type="text", id= `contact-cc${idx}`, name="contactcc" placeholder="CC" )
+                                    option(value= "+1") United States: +1 
+                                    each val, index  in countryCodes
+                                        option(value= val.Dial) #{index}: #{val.Dial} 
+                            div.inline-label.w60(style="margin-left: 10px;")   
+                                label(for="contact-phone") Phone
+                                input.w100.form-control(type="text", name="contactphone" placeholder="Contact Phone Number")
+                                //- div.msg.hide#contact-phone
+                        div.form-group
+                            label(for="email") Email
+                            input.form-control.w95(type="text", name="email" placeholder="Email")
+                            div.msg.hide(id=`contact-email${idx}`)
+                        div.form-group
+                            label(for="address") Address
+                            input.form-control.w95(type="text", name="address" placeholder="Address")
+                            .msg.hide(id=`contact-address${idx}`)
+                        div.form-group
+                            label(for="city") City
+                            input.form-control.w95(type="text", name="city" placeholder="City")
+                            div.msg.hide(id=`contact-city${idx}`)
+                        div.form-group
+                            label(for="state") State
+                            input.form-control.w95(type="text", name="state" placeholder="State")
+                            div.msg.hide(id=`contact-state${idx}`)
+                        div.form-group
+                            label(for="country") Country
+                            select.w95.form-control(type="text", name="country" placeholder="Country" )
+                                    option(value= countryCodes['United States'].Iso2) #{countryCodes['United States'].Iso2}: United States #{countryCodes['United States'].Unicode}
+                                    each val, index  in countryCodes
+                                        option(value= val.Iso2) #{val.Iso2}: #{index} #{val.Unicode}
+                            .msg.hide(id=`contact-country${idx}`)
+                        div.form-group
+                            label(for="zip") Zip Code
+                            input.form-control.w95(type="text", name="zip" placeholder="Zip Code")
+                            .msg.hide(id=`contact-zipl${idx}`)
+                        div.form-group
+                            button.btn-standard.mr1(id=`find-contact${idx}`) Add Contact
+                            button.btn-standard(id=`search-contact${idx}`) Find Contact
+
+
+
+                    div.form-section.gc-r1
+                        div.form-group.part-input.gc-3#missing-needed
+                            label.in-line.w10(for="parts-needed" styles="padding-right: 1rem;") Parts
+                            .search.inline-label(id=`pn${idx}`)
+                                
+                                include ../images/magnifingGlass.svg
+                                span.w100.mr1 Search (Click to add parts)
+                            ul
+                                li(id=`part-li0${idx}`)
+                                    div.gc3(id=`parts-div0${idx}` style="display: none")
+                                        input.form-control.w50(type="text" name=`parts[0][part]` placeholder="")
+                                        input(type="radio" name=`parts[0][status]` value="Missing")
+                                        label(class="inline-label" for="missing-0") Missing
+                                        input(type="radio" name=`parts[0][status]` value="Needed" checked)
+                                        label(class="inline-label" for="needed-0") Needed
+                                        button(class="btn" ) Remove
+                    div.form-section
+                        div.form-group.gc-3
+                            label(for="resolution") Resolution
+                            textarea.form-control(rows="10" type="text",name="resolution" placeholder="" style="width: 100%; max-width: 100%; height: 100px; max-height: 100px; resize: none; overflow-y: scroll")
+                            div.msg.hide(id=`resolution${idx}`)
+                    div.form-section
+                        div.form-group.gc-3
+                            label(for="notes" ) Notes
+                            textarea.form-control(type="text",name="notes" placeholder="Notes" style="width: 100%; max-width: 100%; height: 100px; max-height: 100px; resize: none; overflow-y: scroll")
+                            div.msg.hide(id=`notes${idx}`)
+                    div.form-section.gc-r1 
+                            div.form-group
+                                div(class="text-right") 
+                                    button.btn.btn-standard(type="submit" value="Submit") Submit    
                         
 
             

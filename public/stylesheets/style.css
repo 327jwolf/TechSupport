@@ -84,8 +84,9 @@ select {
   color: var(--primary-txt-color);
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
   color: var(--primary-txt-color);
+  margin: .75rem;
 }
 
 
@@ -384,6 +385,13 @@ h1, h2, h3 {
   transform: scale(1.05);
 }
 
+.card-collapse {
+  position: relative;
+  float: right;
+  top: 0rem;
+  right: 6rem;
+}
+
 .block {
   display: block;
 }
@@ -521,6 +529,11 @@ li {
 
 .search-body {
   min-height: 3rem;
+}
+
+.filterDiv {
+  animation-name:modalopen;
+  animation-duration:1s;
 }
 /*  */
 @keyframes modalopen{

@@ -32,7 +32,7 @@ domIsReady (function() {
     let theme = document.querySelector('.toggle-theme');
     let root = document.querySelector(':root');
 
-    let oasisLogocolor = document.querySelector('#oasis-blue');
+    let oasisLogoColor = document.querySelector('#oasis-blue');
 
     // Show or hides input form
     // let formDiv = document.querySelector('.form-div');
@@ -57,13 +57,13 @@ domIsReady (function() {
         if(document.documentElement.hasAttribute('theme')){
             document.documentElement.removeAttribute('theme');
             // togFormPath.setAttribute('fill', ' hsl(350, 5%, 15%)');
-            oasisLogocolor.setAttribute('stop-color', 'blue');
+            oasisLogoColor.setAttribute('stop-color', 'blue');
             localStorage.removeItem('theme'); 
         }
         else{
             document.documentElement.setAttribute('theme', 'dark');
             // togFormPath.setAttribute('fill', 'hsl(350, 9%, 89%)');
-            oasisLogocolor.setAttribute('stop-color', 'lightblue');
+            oasisLogoColor.setAttribute('stop-color', 'lightblue');
             localStorage.setItem('theme', 'dark');
         }
     }
@@ -71,7 +71,7 @@ domIsReady (function() {
     if(localStorage.getItem('theme')){
         document.documentElement.setAttribute('theme', 'dark');
         // togFormPath.setAttribute('fill', 'hsl(350, 9%, 89%)');
-        oasisLogocolor.setAttribute('stop-color', 'lightblue');
+        oasisLogoColor.setAttribute('stop-color', 'lightblue');
     }
  
     theme.addEventListener('click', setTheme);
@@ -244,11 +244,11 @@ domIsReady (function() {
         let registerSubmitBtn = registerForm.querySelector('.btn');
         let registerInputCollection = registerForm.querySelectorAll('.form-control');
         let passwordInput = registerForm.querySelector('input[name="password"]');
-        
+        let registedFormInputs = registerForm.querySelectorAll('input');
         registerSubmitBtn.disabled = true;
 
         const validForm = () => {
-            let formOKtoSubmit = Array.from(registerForm.querySelectorAll('input')).map(el => el.classList.contains('validityChecked') ? 'true' : 'false').includes('false');
+            let formOKtoSubmit = [...registedFormInputs].map(el => el.classList.contains('validityChecked') ? 'true' : 'false').includes('false');
             if(formOKtoSubmit){
                 registerSubmitBtn.disabled = true;
             }else{
@@ -353,7 +353,7 @@ domIsReady (function() {
         loginSubmitBtn.disabled = true;
 
         const validForm = () => {
-            let formOKtoSubmit = Array.from([loginEmail, passwordInput]).map(el => el.classList.contains('validityChecked') ? 'true' : 'false').includes('false');
+            let formOKtoSubmit = [loginEmail, passwordInput].map(el => el.classList.contains('validityChecked') ? 'true' : 'false').includes('false');
             if(formOKtoSubmit){
                 loginSubmitBtn.disabled = true
             }else{
@@ -412,6 +412,7 @@ domIsReady (function() {
         supportForm();
     }
 
+
     
     function supportForm(){
         // Main form Selectors
@@ -425,26 +426,47 @@ domIsReady (function() {
         const machineList = entryFormWrapper.querySelector('#machineList');
         const problemList = entryFormWrapper.querySelector('#problemList');
         const partsneeded = entryFormWrapper.querySelector('#pn');
-        // const statusRadioBtn = entryFormWrapper.querySelectorAll('#resolved-pending input[type=radio]');
-        // const partsRadioBtn = entryFormWrapper.querySelectorAll('#missing-needed input[type=radio]');
 
-        // [... statusRadioBtn].forEach(radioBtn => {
-        //     radioBtn.addEventListener('click', e => {
+        // cards selectors
+        const cards = document.querySelectorAll('.card-div');
+        [...cards].forEach((card, index) => {
+            const subform = card.querySelector('.subform');
+
+            const btn = card.querySelector('.addForm');
+            btn.addEventListener('click', e => {
+                e.preventDefault();
                 
-        //     })
-        // });
+                if (subform.classList.contains('none')) {
+                    subform.classList.remove('none');
+                    btn.innerText = 'Close';
+                } else {
+                    subform.classList.add('none');
+                    btn.innerText = 'Add';
+                }
+                
+            })
+        })
+
+        // card subform selectors
+        const subForm = document.querySelectorAll('.subform');
+        [...subForm].forEach((form, idx) => {
+            const pn = form.querySelector(`#pn${idx}`);
+            pn.addEventListener('click',  (e) => {
+                e.preventDefault();
+                openPartsSearchModal(e);
+                createPartFromSearch(searchFields, pn, bodyNumTarget)
+            });
+        });
+
         
-        // [... partsRadioBtn].forEach(radioBtn => {
-        //     radioBtn.addEventListener('click', e => {
-                
-        //     })
-        // }); 
 
          // Search Pop-up Selectors
         const searchModal = document.querySelector('.search-wrapper');
         const searchFields = searchModal.querySelectorAll('.search-field');
         const bodyNumTarget = searchModal.querySelector('#n-search');
         const btnCloseSearchModal = searchModal.querySelector('#btn-close-modal');
+        const filterDiv = document.querySelector('.filterDiv');
+        const cardcollapse = document.querySelector('.card-collapse');
 
         setSelectMenus('/api/machinetypes/all', machineList, 'machinename', `machineType`);
         setSelectMenus('/api/problemcatagory/all', problemList, `catagoryname`);
@@ -462,97 +484,39 @@ domIsReady (function() {
             }
         })
 
+        cardcollapse.addEventListener('click', (e) => {
+            if(filterDiv.classList.contains('none')){
+                filterDiv.classList.remove('none')
+            }else{
+                filterDiv.classList.add('none')
+            }
+        })
+
         function closeSearchModal(e){
             searchModal.style.display = 'none';
             bodyNumTarget.innerHTML = ``;
-            Array.from(searchModal.querySelectorAll('.search-field')).forEach(item => item.value = "");
+            [...searchFields].forEach(item => item.value = "");
+            // input.removeEventListener("input", _inputEventListener)
         }
 
         btnCloseSearchModal.addEventListener('click', closeSearchModal);
 
-        partsneeded.addEventListener('click', getPartsSearch);
+        partsneeded.addEventListener('click', (e) => {
+            e.preventDefault()
+            openPartsSearchModal(e);
+            createPartFromSearch(searchFields, partsneeded, bodyNumTarget);
+        });
 
-        function getPartsSearch(elMagGlass) {
-            elMagGlass.preventDefault();
+        function openPartsSearchModal(e) {
+            e.preventDefault();
             searchModal.style.display = 'block';
         }
-        let j = 1;
-        [... searchFields].forEach(input => {
-            input.addEventListener('input', async(inputEl)=>{
-                inputEl.preventDefault();
-                // inputEl.stopPropagation();
-                let searchParameter = inputEl.target.value;
-                let apiUrl = inputEl.target.getAttribute('id') === 'number-search' ? 'pn' : 'desc';
 
-                let timer;
-                bodyNumTarget.innerHTML = ``;
-                clearTimeout(timer);
-                if (searchParameter === "*" || searchParameter.length > 3) {
-                    timer = setTimeout(async ()=>{
-                        bodyNumTarget.innerHTML = ``;
-                        
-                        const lookupResult = await getData(`${window.location.origin}/api/parts/${apiUrl}/${searchParameter}`, 'GET', {data: 'yes'})
-                        .then(res => {
-                            res.forEach((item, i) => {
-                                let elContainer = document.createElement("div");
-                                elContainer.style.paddingTop = '.5rem';
-                                elContainer.setAttribute('data-key', item._id);
-                                elContainer.setAttribute('id', `result-${i}`);
-                                elContainer.classList.add('search-res');
-                                if(i%2 === 0) {
-                                    elContainer.classList.add('bground-color');
-                                }
-
-                                elContainer.addEventListener('click', (e) => {
-                                    let inputField = '';
-                                    let htmlPartsSection = `
-                                        <li id="part-li${j}">
-                                            <div class="gc3" id="parts-div${j}">
-                                                <input class="form-control w50" id="inputParts-${j}" type="text" name="parts[${j}][part]" placeholder="Enter just the part number using comma seperated values">
-                                                <input type="radio" id="missing-${j}" name="parts[${j}][status]" value="Missing">
-                                                <label class="inline-label" for="missing-${j}">Missing</label>
-                                                <input type="radio" id="needed-${j}" name="parts[${j}][status]" value="Needed" checked >
-                                                <label class="inline-label" for="needed-${j}">Needed</label>
-                                                <button class="btn" id="remove-btn${j}">Remove</button>
-                                            </div>
-                                        </li>
-                                    `;
-                                    partsneeded.nextSibling.insertAdjacentHTML('beforeend', htmlPartsSection);
-                                    inputField = document.querySelector(`#inputParts-${j}`);
-                                    removeBtn = document.querySelector(`#remove-btn${j}`);
-                                    removeBtn.addEventListener('click', e => inputField.parentNode.parentNode.remove())
-                                    inputField.value = `${item.partNumber} - ${item.description}`;
-                                    j++;
-                                    document.querySelector('#number-search').value = '';
-                                    document.querySelector('#desc-search').value = '';
-                                    // closeSearchModal();
-                                })
-
-                                bodyNumTarget.appendChild(elContainer);
-
-                                let elNum = document.createElement("div");
-                                elNum.style.width = '17%';
-                                elNum.style.display = 'inline-block';
-                                elNum.innerText = item.partNumber;
-                                elContainer.appendChild(elNum);
-
-                                let elDesc = document.createElement("div");
-                                elDesc.style.width = '80%';
-                                elDesc.style.display = 'inline-block';
-                                elDesc.innerText = item.description;
-                                elContainer.appendChild(elDesc);
-                            })
-                            
-                        })
-                        .catch(e => console.error(`Error getData: ${e}`))
-                    },350);
-                }
-            });
-        });
     
     }
 
-/*******************************************************************/
+
+/********************************************************************************************************************************************************/
 
     async function getTicketNumber (ticketNumEL) {
         try {
@@ -576,11 +540,95 @@ domIsReady (function() {
         .catch(e => console.error(e));
     }
 
+    function createPartFromSearch(target, destination, bodyNumTarget) {
+        let j = 1;
+        [... target].forEach(searchBoxInput => {
+            searchBoxInput.addEventListener('input', async function _inputEventListener (inputEl) {
+                inputEl.preventDefault();
+                // inputEl.stopPropagation();
+                let searchParameter = inputEl.target.value;
+                let apiUrlSearchParam = inputEl.target.getAttribute('id') === 'number-search' ? 'pn' : 'desc';
+
+                let timer;
+                bodyNumTarget.innerHTML = ``;
+                clearTimeout(timer);
+                if (searchParameter === "*" || searchParameter.length > 3) {
+                    timer = setTimeout(async ()=>{
+                        bodyNumTarget.innerHTML = ``;
+                        let lookupResult = '';
+
+                        lookupResult = await getData(`${window.location.origin}/api/parts/${apiUrlSearchParam}/${searchParameter}`, 'GET', {data: 'yes'})
+                        .then(res => {
+                            console.log(res)
+                            res.forEach((item, i) => {
+                                let elContainer = document.createElement("div");
+                                elContainer.style.paddingTop = '.5rem';
+                                elContainer.setAttribute('data-key', item._id);
+                                elContainer.setAttribute('id', `result-${i}`);
+                                elContainer.classList.add('search-res');
+                                if(i%2 === 0) {
+                                    elContainer.classList.add('bground-color');
+                                }
+
+                                elContainer.addEventListener('click', (e) => {
+                                    e.preventDefault();
+                                    let inputField = '';
+                                    let htmlPartsSection = `
+                                        <li id="part-li${j}">
+                                            <div class="gc3" id="parts-div${j}">
+                                                <input class="form-control w50" id="inputParts-${j}" type="text" name="parts[${j}][part]" placeholder="">
+                                                <input type="radio" id="missing-${j}" name="parts[${j}][status]" value="Missing">
+                                                <label class="inline-label" for="missing-${j}">Missing</label>
+                                                <input type="radio" id="needed-${j}" name="parts[${j}][status]" value="Needed" checked >
+                                                <label class="inline-label" for="needed-${j}">Needed</label>
+                                                <button class="btn" id="remove-btn${j}">Remove</button>
+                                            </div>
+                                        </li>
+                                    `;
+                                    destination.nextSibling.insertAdjacentHTML('beforeend', htmlPartsSection);
+                                    inputField = document.querySelector(`#inputParts-${j}`);
+                                    let removeBtn = document.querySelector(`#remove-btn${j}`);
+                                    removeBtn.addEventListener('click', e => {
+                                        e.preventDefault();
+                                        inputField.parentNode.parentNode.remove();
+                                    });
+                                    inputField.value = `${item.partNumber} - ${item.description}`;
+                                    j++;
+                                    document.querySelector('#number-search').value = '';
+                                    document.querySelector('#desc-search').value = '';
+                                    // closeSearchModal();
+                                })
+
+                                bodyNumTarget.appendChild(elContainer);
+
+                                let elNum = document.createElement("div");
+                                elNum.style.width = '17%';
+                                elNum.style.display = 'inline-block';
+                                elNum.innerText = item.partNumber;
+                                elContainer.appendChild(elNum);
+
+                                let elDesc = document.createElement("div");
+                                elDesc.style.width = '80%';
+                                elDesc.style.display = 'inline-block';
+                                elDesc.innerText = item.description;
+                                elContainer.appendChild(elDesc);
+                            })
+                        })
+                        .catch(e => console.error(`Error getData: ${e}`))
+                    },350);
+                }
+            });
+        });
+    
+    }
+
+
+
     function getUserId(){
-        const userid = document.querySelector('input[name=contactid]');
+        const userid = document.querySelector('input[name=userId]');
         return userid.value;
     }
-    
+
     async function getData(url = '', method, data = {}) {
         // Default options are marked with *
         const response = await fetch(url, {
@@ -606,7 +654,7 @@ domIsReady (function() {
         const response = await fetch(url, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        cache: 'reload', // *default, no-cache, reload, force-cache, only-if-cached
         credentials: 'same-origin', // include, *same-origin, omit
         headers: {
             'Content-Type': 'application/json'
