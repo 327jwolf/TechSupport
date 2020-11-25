@@ -84,115 +84,115 @@ div.cardsDiv.mt1
                                 button.btn.btn-standard Edit
                                 div.msg.hide.btn-edit(id=`btn-edit-main-form${idx}`)
             button.btn.btn-standard.addForm(style="margin-left: 2rem; margin-bottom: 1rem;") Add
-            div.subform.none
-                form.add-subform(action="/techInfoSubform", method="post")
-                    div.form-section.gc-r1
-                        div.form-group
-                                label(for="ticket-number") Ticket Number
-                                input.form-control.w95(type="text",name="ticketnumber" placeholder="Auto Generated" readonly) 
-                                .msg.hide(id=`ticket-number${idx}`)
-                        div.form-group
-                            input(type="hidden", name="_csrf", value=csrfToken)
+            //- div.subform.none
+            //-     form.add-subform(action="/techInfoSubform", method="post")
+            //-         div.form-section.gc-r1
+            //-             div.form-group
+            //-                     label(for="ticket-number") Ticket Number
+            //-                     input.form-control.w95(type="text",name="ticketnumber" placeholder="Auto Generated" readonly) 
+            //-                     .msg.hide(id=`ticket-number${idx}`)
+            //-             div.form-group
+            //-                 input(type="hidden", name="_csrf", value=csrfToken)
                         
-                        div.form-group
-                                    label(for="created-By") Created By
-                                    input.form-control.w95(type="text",name="createdBy" placeholder="Auto Generated" readonly)
-                                    div.msg.hide(id=`Created-By${idx}`)
-                    //- include      ./dashLowerForm.pug
-                    div.form-section.gc-r1
-                        div.form-group
-                            label(for="problem-catagory") Problem-Catagory
-                            input.form-control.w95(type="text",name="problemcatagory" placeholder="Problem Catagory" list="problemList")
-                            div.msg.hide(id=`problem-catagory${idx}`)
-                            datalist(id=`problemList${idx}`)
-                        div.form-group.radio#resolved-pending
-                            div(style="display: block; height: 50%;")
-                            input.form-control(type="radio", id=`resolved${idx}`, name="ticketstatus", value="Resolved")
-                            label.inline-label(for="resolved") Resolved
-                            input.form-control(type="radio", id=`pending${idx}`, name="ticketstatus", value="Pending" checked)
-                            label.inline-label(for="pending") Pending
-                    //- include ./contacts.pug
+            //-             div.form-group
+            //-                         label(for="created-By") Created By
+            //-                         input.form-control.w95(type="text",name="createdBy" placeholder="Auto Generated" readonly)
+            //-                         div.msg.hide(id=`Created-By${idx}`)
+            //-         //- include      ./dashLowerForm.pug
+            //-         div.form-section.gc-r1
+            //-             div.form-group
+            //-                 label(for="problem-catagory") Problem-Catagory
+            //-                 input.form-control.w95(type="text",name="problemcatagory" placeholder="Problem Catagory" list="problemList")
+            //-                 div.msg.hide(id=`problem-catagory${idx}`)
+            //-                 datalist(id=`problemList${idx}`)
+            //-             div.form-group.radio#resolved-pending
+            //-                 div(style="display: block; height: 50%;")
+            //-                 input.form-control(type="radio", id=`resolved${idx}`, name="ticketstatus", value="Resolved")
+            //-                 label.inline-label(for="resolved") Resolved
+            //-                 input.form-control(type="radio", id=`pending${idx}`, name="ticketstatus", value="Pending" checked)
+            //-                 label.inline-label(for="pending") Pending
+            //-         //- include ./contacts.pug
 
-                    div.form-section.gc-r1
-                        input(type="text",name="contactid" placeholder="Contact ID" hidden)
-                        div.form-group
-                            label(for="contact-name") Contact Name
-                            input.form-control.w95(type="text",name="contactname" placeholder="Contact Name")
-                            div.msg.hide(id=`contact-name${idx}`)
-                        div.form-group
-                            div.inline-label.w30 
-                                label(for="contact-cc") CC
-                                select.w100.form-control(type="text", id= `contact-cc${idx}`, name="contactcc" placeholder="CC" )
-                                    option(value= "+1") United States: +1 
-                                    each val, index  in countryCodes
-                                        option(value= val.Dial) #{index}: #{val.Dial} 
-                            div.inline-label.w60(style="margin-left: 10px;")   
-                                label(for="contact-phone") Phone
-                                input.w100.form-control(type="text", name="contactphone" placeholder="Contact Phone Number")
-                                //- div.msg.hide#contact-phone
-                        div.form-group
-                            label(for="email") Email
-                            input.form-control.w95(type="text", name="email" placeholder="Email")
-                            div.msg.hide(id=`contact-email${idx}`)
-                        div.form-group
-                            label(for="address") Address
-                            input.form-control.w95(type="text", name="address" placeholder="Address")
-                            .msg.hide(id=`contact-address${idx}`)
-                        div.form-group
-                            label(for="city") City
-                            input.form-control.w95(type="text", name="city" placeholder="City")
-                            div.msg.hide(id=`contact-city${idx}`)
-                        div.form-group
-                            label(for="state") State
-                            input.form-control.w95(type="text", name="state" placeholder="State")
-                            div.msg.hide(id=`contact-state${idx}`)
-                        div.form-group
-                            label(for="country") Country
-                            select.w95.form-control(type="text", name="country" placeholder="Country" )
-                                    option(value= countryCodes['United States'].Iso2) #{countryCodes['United States'].Iso2}: United States #{countryCodes['United States'].Unicode}
-                                    each val, index  in countryCodes
-                                        option(value= val.Iso2) #{val.Iso2}: #{index} #{val.Unicode}
-                            .msg.hide(id=`contact-country${idx}`)
-                        div.form-group
-                            label(for="zip") Zip Code
-                            input.form-control.w95(type="text", name="zip" placeholder="Zip Code")
-                            .msg.hide(id=`contact-zipl${idx}`)
-                        div.form-group
-                            button.btn-standard.mr1(id=`find-contact${idx}`) Add Contact
-                            button.btn-standard(id=`search-contact${idx}`) Find Contact
+            //-         div.form-section.gc-r1
+            //-             input(type="text",name="contactid" placeholder="Contact ID" hidden)
+            //-             div.form-group
+            //-                 label(for="contact-name") Contact Name
+            //-                 input.form-control.w95(type="text",name="contactname" placeholder="Contact Name")
+            //-                 div.msg.hide(id=`contact-name${idx}`)
+            //-             div.form-group
+            //-                 div.inline-label.w30 
+            //-                     label(for="contact-cc") CC
+            //-                     select.w100.form-control(type="text", id= `contact-cc${idx}`, name="contactcc" placeholder="CC" )
+            //-                         option(value= "+1") United States: +1 
+            //-                         each val, index  in countryCodes
+            //-                             option(value= val.Dial) #{index}: #{val.Dial} 
+            //-                 div.inline-label.w60(style="margin-left: 10px;")   
+            //-                     label(for="contact-phone") Phone
+            //-                     input.w100.form-control(type="text", name="contactphone" placeholder="Contact Phone Number")
+            //-                     //- div.msg.hide#contact-phone
+            //-             div.form-group
+            //-                 label(for="email") Email
+            //-                 input.form-control.w95(type="text", name="email" placeholder="Email")
+            //-                 div.msg.hide(id=`contact-email${idx}`)
+            //-             div.form-group
+            //-                 label(for="address") Address
+            //-                 input.form-control.w95(type="text", name="address" placeholder="Address")
+            //-                 .msg.hide(id=`contact-address${idx}`)
+            //-             div.form-group
+            //-                 label(for="city") City
+            //-                 input.form-control.w95(type="text", name="city" placeholder="City")
+            //-                 div.msg.hide(id=`contact-city${idx}`)
+            //-             div.form-group
+            //-                 label(for="state") State
+            //-                 input.form-control.w95(type="text", name="state" placeholder="State")
+            //-                 div.msg.hide(id=`contact-state${idx}`)
+            //-             div.form-group
+            //-                 label(for="country") Country
+            //-                 select.w95.form-control(type="text", name="country" placeholder="Country" )
+            //-                         option(value= countryCodes['United States'].Iso2) #{countryCodes['United States'].Iso2}: United States #{countryCodes['United States'].Unicode}
+            //-                         each val, index  in countryCodes
+            //-                             option(value= val.Iso2) #{val.Iso2}: #{index} #{val.Unicode}
+            //-                 .msg.hide(id=`contact-country${idx}`)
+            //-             div.form-group
+            //-                 label(for="zip") Zip Code
+            //-                 input.form-control.w95(type="text", name="zip" placeholder="Zip Code")
+            //-                 .msg.hide(id=`contact-zipl${idx}`)
+            //-             div.form-group
+            //-                 button.btn-standard.mr1(id=`find-contact${idx}`) Add Contact
+            //-                 button.btn-standard(id=`search-contact${idx}`) Find Contact
 
 
 
-                    div.form-section.gc-r1
-                        div.form-group.part-input.gc-3#missing-needed
-                            label.in-line.w10(for="parts-needed" styles="padding-right: 1rem;") Parts
-                            .search.inline-label(id=`pn${idx}`)
+            //-         div.form-section.gc-r1
+            //-             div.form-group.part-input.gc-3#missing-needed
+            //-                 label.in-line.w10(for="parts-needed" styles="padding-right: 1rem;") Parts
+            //-                 .search.inline-label(id=`pn${idx}`)
                                 
-                                include ../images/magnifingGlass.svg
-                                span.w100.mr1 Search (Click to add parts)
-                            ul
-                                li(id=`part-li0${idx}`)
-                                    div.gc3(id=`parts-div0${idx}` style="display: none")
-                                        input.form-control.w50(type="text" name=`parts[0][part]` placeholder="")
-                                        input(type="radio" name=`parts[0][status]` value="Missing")
-                                        label(class="inline-label" for="missing-0") Missing
-                                        input(type="radio" name=`parts[0][status]` value="Needed" checked)
-                                        label(class="inline-label" for="needed-0") Needed
-                                        button(class="btn" ) Remove
-                    div.form-section
-                        div.form-group.gc-3
-                            label(for="resolution") Resolution
-                            textarea.form-control(rows="10" type="text",name="resolution" placeholder="" style="width: 100%; max-width: 100%; height: 100px; max-height: 100px; resize: none; overflow-y: scroll")
-                            div.msg.hide(id=`resolution${idx}`)
-                    div.form-section
-                        div.form-group.gc-3
-                            label(for="notes" ) Notes
-                            textarea.form-control(type="text",name="notes" placeholder="Notes" style="width: 100%; max-width: 100%; height: 100px; max-height: 100px; resize: none; overflow-y: scroll")
-                            div.msg.hide(id=`notes${idx}`)
-                    div.form-section.gc-r1 
-                            div.form-group
-                                div(class="text-right") 
-                                    button.btn.btn-standard(type="submit" value="Submit") Submit    
+            //-                     include ../images/magnifingGlass.svg
+            //-                     span.w100.mr1 Search (Click to add parts)
+            //-                 ul
+            //-                     li(id=`part-li0${idx}`)
+            //-                         div.gc3(id=`parts-div0${idx}` style="display: none")
+            //-                             input.form-control.w50(type="text" name=`parts[0][part]` placeholder="")
+            //-                             input(type="radio" name=`parts[0][status]` value="Missing")
+            //-                             label(class="inline-label" for="missing-0") Missing
+            //-                             input(type="radio" name=`parts[0][status]` value="Needed" checked)
+            //-                             label(class="inline-label" for="needed-0") Needed
+            //-                             button(class="btn" ) Remove
+            //-         div.form-section
+            //-             div.form-group.gc-3
+            //-                 label(for="resolution") Resolution
+            //-                 textarea.form-control(rows="10" type="text",name="resolution" placeholder="" style="width: 100%; max-width: 100%; height: 100px; max-height: 100px; resize: none; overflow-y: scroll")
+            //-                 div.msg.hide(id=`resolution${idx}`)
+            //-         div.form-section
+            //-             div.form-group.gc-3
+            //-                 label(for="notes" ) Notes
+            //-                 textarea.form-control(type="text",name="notes" placeholder="Notes" style="width: 100%; max-width: 100%; height: 100px; max-height: 100px; resize: none; overflow-y: scroll")
+            //-                 div.msg.hide(id=`notes${idx}`)
+            //-         div.form-section.gc-r1 
+            //-                 div.form-group
+            //-                     div(class="text-right") 
+            //-                         button.btn.btn-standard(type="submit" value="Submit") Submit    
                         
 
             

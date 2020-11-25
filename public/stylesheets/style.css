@@ -223,6 +223,10 @@ h1, h2, h3, h4 {
 
 }
 
+.main-form .form-group {
+  
+}
+
 .main-form .form-group label {
   display: block;
 }
@@ -246,7 +250,7 @@ h1, h2, h3, h4 {
 .main-form .form-group input[type=radio ] {
   display: inline-block;
   /* width: 10%; */
-  overflow: hidden;
+  overflow: auto;
   cursor: pointer;
 }
 
@@ -254,6 +258,10 @@ h1, h2, h3, h4 {
   display: inline-block;
   width: 10%;
 } */
+
+.main-form .part-input ul {
+  margin-bottom: 1rem;
+}
 
 .main-form .part-input label {
   display: inline-block !important;
@@ -383,6 +391,7 @@ h1, h2, h3, h4 {
   padding: .55rem;
   background-color: rgb(78, 72, 72);
   transform: scale(1.05);
+  color: var(--header-bg-color);
 }
 
 .card-collapse {

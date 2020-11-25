@@ -429,44 +429,48 @@ domIsReady (function() {
 
         // cards selectors
         const cards = document.querySelectorAll('.card-div');
-        [...cards].forEach((card, index) => {
-            const subform = card.querySelector('.subform');
-
-            const btn = card.querySelector('.addForm');
-            btn.addEventListener('click', e => {
-                e.preventDefault();
-                
-                if (subform.classList.contains('none')) {
-                    subform.classList.remove('none');
-                    btn.innerText = 'Close';
-                } else {
-                    subform.classList.add('none');
-                    btn.innerText = 'Add';
-                }
-                
-            })
-        })
 
         // card subform selectors
         const subForm = document.querySelectorAll('.subform');
-        [...subForm].forEach((form, idx) => {
-            const pn = form.querySelector(`#pn${idx}`);
-            pn.addEventListener('click',  (e) => {
-                e.preventDefault();
-                openPartsSearchModal(e);
-                createPartFromSearch(searchFields, pn, bodyNumTarget)
-            });
-        });
 
-        
-
-         // Search Pop-up Selectors
+        // Search Pop-up Selectors
         const searchModal = document.querySelector('.search-wrapper');
         const searchFields = searchModal.querySelectorAll('.search-field');
         const bodyNumTarget = searchModal.querySelector('#n-search');
         const btnCloseSearchModal = searchModal.querySelector('#btn-close-modal');
         const filterDiv = document.querySelector('.filterDiv');
         const cardcollapse = document.querySelector('.card-collapse');
+
+
+        // [...cards].forEach((card, index) => {
+        //     const subform = card.querySelector('.subform');
+
+        //     const btn = card.querySelector('.addForm');
+        //     btn.addEventListener('click', e => {
+        //         e.preventDefault();
+                
+        //         if (subform.classList.contains('none')) {
+        //             subform.classList.remove('none');
+        //             btn.innerText = 'Close';
+        //         } else {
+        //             subform.classList.add('none');
+        //             btn.innerText = 'Add';
+        //         }
+                
+        //     })
+        // });
+
+
+        // [...subForm].forEach((form, idx) => {
+        //     const pn = form.querySelector(`#pn${idx}`);
+        //     pn.addEventListener('click',  (e) => {
+        //         e.preventDefault();
+        //         openPartsSearchModal(e);
+        //         // createPartFromSearch(searchFields, pn, bodyNumTarget)
+        //     });
+        // });
+
+         
 
         setSelectMenus('/api/machinetypes/all', machineList, 'machinename', `machineType`);
         setSelectMenus('/api/problemcatagory/all', problemList, `catagoryname`);
@@ -504,19 +508,114 @@ domIsReady (function() {
         partsneeded.addEventListener('click', (e) => {
             e.preventDefault()
             openPartsSearchModal(e);
-            createPartFromSearch(searchFields, partsneeded, bodyNumTarget);
         });
 
         function openPartsSearchModal(e) {
             e.preventDefault();
             searchModal.style.display = 'block';
         }
+     
 
+        let j = 1;
+        [... searchFields].forEach((searchBoxInput) => {
+            searchBoxInput.addEventListener('input', async function _inputEventListener (inputEl) {
+                inputEl.preventDefault();
+                let searchParameter = inputEl.target.value;
+                let apiUrlSearchParam = inputEl.target.getAttribute('id') === 'number-search' ? 'pn' : 'desc';
+
+                let timer;
+                bodyNumTarget.innerHTML = ``;
+                clearTimeout(timer);
+                if (searchParameter === "*" || searchParameter.length > 3) {
+                    timer = await sleep(350);
+                    bodyNumTarget.innerHTML = ``;
+                    let lookupResult = '';
+
+                    try {
+                        lookupResult = await getData(`${window.location.origin}/api/parts/${apiUrlSearchParam}/${searchParameter}`, 'GET', {data: 'yes'})
+                        lookupResult.forEach((item, idx) => {
+                            const elContainer = createPartSearchModalItems(item, idx)
+
+                            elContainer.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                let inputField = '';
+                                let htmlPartsSection = createPartSearchResultElement(j);
+
+                                partsneeded.nextElementSibling.insertAdjacentHTML('beforeend', htmlPartsSection);
+                                inputField = document.querySelector(`#inputParts-${j}`);
+                                let removeBtn = document.querySelector(`#remove-btn${j}`);
+                                removeBtn.addEventListener('click', e => {
+                                    e.preventDefault();
+                                    e.target.parentElement.parentElement.remove()
+                                });
+                                inputField.value = `${item.partNumber} - ${item.description}`;
+                                j++;
+                                document.querySelector('#number-search').value = '';
+                                document.querySelector('#desc-search').value = '';
+                                // closeSearchModal();
+                            })
+
+                            bodyNumTarget.appendChild(elContainer);
+
+                            let elNum = document.createElement("div");
+                            elNum.style.width = '17%';
+                            elNum.style.display = 'inline-block';
+                            elNum.innerText = item.partNumber;
+                            elContainer.appendChild(elNum);
+
+                            let elDesc = document.createElement("div");
+                            elDesc.style.width = '80%';
+                            elDesc.style.display = 'inline-block';
+                            elDesc.innerText = item.description;
+                            elContainer.appendChild(elDesc);
+                            elNum = ""
+                            elDesc = ""
+                        })
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+            });
+        });
+    
     
     }
 
 
 /********************************************************************************************************************************************************/
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function createPartSearchResultElement(idx){
+        return `
+            <li id="part-li${idx}">
+                <div class="gc3" id="parts-div${idx}">
+                    <input class="form-control w50" id="inputParts-${idx}" type="text" name="parts[${idx}][part]" placeholder="">
+                    <input type="radio" id="missing-${idx}" name="parts[${idx}][status]" value="Missing">
+                    <label class="inline-label" for="missing-${idx}">Missing</label>
+                    <input type="radio" id="needed-${idx}" name="parts[${idx}][status]" value="Needed" checked >
+                    <label class="inline-label" for="needed-${idx}">Needed</label>
+                    <button class="btn" id="remove-btn${idx}">Remove</button>
+                </div>
+            </li>
+        `;
+
+    }
+
+    function createPartSearchModalItems(item, idx){
+        let element = document.createElement("div");
+        element.style.paddingTop = '.5rem';
+        element.setAttribute('data-key', item._id);
+        element.setAttribute('id', `result-${idx}`);
+        element.classList.add('search-res');
+        if(idx%2 === 0) {
+            element.classList.add('bground-color');
+        }
+        return element
+
+    }
 
     async function getTicketNumber (ticketNumEL) {
         try {
@@ -541,85 +640,7 @@ domIsReady (function() {
     }
 
     function createPartFromSearch(target, destination, bodyNumTarget) {
-        let j = 1;
-        [... target].forEach(searchBoxInput => {
-            searchBoxInput.addEventListener('input', async function _inputEventListener (inputEl) {
-                inputEl.preventDefault();
-                // inputEl.stopPropagation();
-                let searchParameter = inputEl.target.value;
-                let apiUrlSearchParam = inputEl.target.getAttribute('id') === 'number-search' ? 'pn' : 'desc';
-
-                let timer;
-                bodyNumTarget.innerHTML = ``;
-                clearTimeout(timer);
-                if (searchParameter === "*" || searchParameter.length > 3) {
-                    timer = setTimeout(async ()=>{
-                        bodyNumTarget.innerHTML = ``;
-                        let lookupResult = '';
-
-                        lookupResult = await getData(`${window.location.origin}/api/parts/${apiUrlSearchParam}/${searchParameter}`, 'GET', {data: 'yes'})
-                        .then(res => {
-                            console.log(res)
-                            res.forEach((item, i) => {
-                                let elContainer = document.createElement("div");
-                                elContainer.style.paddingTop = '.5rem';
-                                elContainer.setAttribute('data-key', item._id);
-                                elContainer.setAttribute('id', `result-${i}`);
-                                elContainer.classList.add('search-res');
-                                if(i%2 === 0) {
-                                    elContainer.classList.add('bground-color');
-                                }
-
-                                elContainer.addEventListener('click', (e) => {
-                                    e.preventDefault();
-                                    let inputField = '';
-                                    let htmlPartsSection = `
-                                        <li id="part-li${j}">
-                                            <div class="gc3" id="parts-div${j}">
-                                                <input class="form-control w50" id="inputParts-${j}" type="text" name="parts[${j}][part]" placeholder="">
-                                                <input type="radio" id="missing-${j}" name="parts[${j}][status]" value="Missing">
-                                                <label class="inline-label" for="missing-${j}">Missing</label>
-                                                <input type="radio" id="needed-${j}" name="parts[${j}][status]" value="Needed" checked >
-                                                <label class="inline-label" for="needed-${j}">Needed</label>
-                                                <button class="btn" id="remove-btn${j}">Remove</button>
-                                            </div>
-                                        </li>
-                                    `;
-                                    destination.nextSibling.insertAdjacentHTML('beforeend', htmlPartsSection);
-                                    inputField = document.querySelector(`#inputParts-${j}`);
-                                    let removeBtn = document.querySelector(`#remove-btn${j}`);
-                                    removeBtn.addEventListener('click', e => {
-                                        e.preventDefault();
-                                        inputField.parentNode.parentNode.remove();
-                                    });
-                                    inputField.value = `${item.partNumber} - ${item.description}`;
-                                    j++;
-                                    document.querySelector('#number-search').value = '';
-                                    document.querySelector('#desc-search').value = '';
-                                    // closeSearchModal();
-                                })
-
-                                bodyNumTarget.appendChild(elContainer);
-
-                                let elNum = document.createElement("div");
-                                elNum.style.width = '17%';
-                                elNum.style.display = 'inline-block';
-                                elNum.innerText = item.partNumber;
-                                elContainer.appendChild(elNum);
-
-                                let elDesc = document.createElement("div");
-                                elDesc.style.width = '80%';
-                                elDesc.style.display = 'inline-block';
-                                elDesc.innerText = item.description;
-                                elContainer.appendChild(elDesc);
-                            })
-                        })
-                        .catch(e => console.error(`Error getData: ${e}`))
-                    },350);
-                }
-            });
-        });
-    
+        
     }
 
 
