@@ -441,34 +441,42 @@ domIsReady (function() {
         const filterDiv = document.querySelector('.filterDiv');
         const cardcollapse = document.querySelector('.card-collapse');
 
+        let pnClicked = "";
 
-        // [...cards].forEach((card, index) => {
-        //     const subform = card.querySelector('.subform');
 
-        //     const btn = card.querySelector('.addForm');
-        //     btn.addEventListener('click', e => {
-        //         e.preventDefault();
+        [...cards].forEach((card, index) => {
+            const subform = card.querySelector('.subform');
+            const ticketNum = card.querySelector(`#tick${index}`).innerText;
+            const ticketNumInput = subform.querySelector('input[name=ticketnumber]');
+            ticketNumInput.value = ticketNum;
+
+            const createdByInput = subform.querySelector('input[name=createdBy]');
+            createdByInput.value = getUserId();;
+
+            const btn = card.querySelector('.addForm');
+            btn.addEventListener('click', e => {
+                e.preventDefault();
                 
-        //         if (subform.classList.contains('none')) {
-        //             subform.classList.remove('none');
-        //             btn.innerText = 'Close';
-        //         } else {
-        //             subform.classList.add('none');
-        //             btn.innerText = 'Add';
-        //         }
+                if (subform.classList.contains('none')) {
+                    subform.classList.remove('none');
+                    btn.innerText = 'Close';
+                } else {
+                    subform.classList.add('none');
+                    btn.innerText = 'Add';
+                }
                 
-        //     })
-        // });
+            })
+        });
 
 
-        // [...subForm].forEach((form, idx) => {
-        //     const pn = form.querySelector(`#pn${idx}`);
-        //     pn.addEventListener('click',  (e) => {
-        //         e.preventDefault();
-        //         openPartsSearchModal(e);
-        //         // createPartFromSearch(searchFields, pn, bodyNumTarget)
-        //     });
-        // });
+        [...subForm].forEach((form, idx) => {
+            const pn = form.querySelector(`#pn${idx}`);
+            pn.addEventListener('click',  (e) => {
+                 e.preventDefault();
+                openPartsSearchModal(e);
+                // createPartFromSearch(searchFields, pn, bodyNumTarget)
+            });
+        });
 
          
 
@@ -512,6 +520,7 @@ domIsReady (function() {
 
         function openPartsSearchModal(e) {
             e.preventDefault();
+            pnClicked = e.target
             searchModal.style.display = 'block';
         }
      
@@ -541,7 +550,7 @@ domIsReady (function() {
                                 let inputField = '';
                                 let htmlPartsSection = createPartSearchResultElement(j);
 
-                                partsneeded.nextElementSibling.insertAdjacentHTML('beforeend', htmlPartsSection);
+                                pnClicked.nextElementSibling.insertAdjacentHTML('beforeend', htmlPartsSection);
                                 inputField = document.querySelector(`#inputParts-${j}`);
                                 let removeBtn = document.querySelector(`#remove-btn${j}`);
                                 removeBtn.addEventListener('click', e => {

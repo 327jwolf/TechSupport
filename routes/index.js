@@ -91,8 +91,10 @@ router.post('/dashboard', async function(req, res, next){
 router.post('/techInfoSubform', async function(req, res, next){
   let date = new Date(req.body['createdAt'])
   console.log(req.body)
-  // const contact = await createContact(req)
-  // const techInfoSub = await createTechInfoSub(req)
+  if(req.body.contactname){
+    const contact = await createContact(req)
+  }
+  const techInfoSub = await createTechInfoSub(req)
   // console.log(contact, techInfoHead, techInfoSub)
   res.redirect('/dashboard');
 })
