@@ -429,9 +429,11 @@ domIsReady (function() {
 
         // cards selectors
         const cards = document.querySelectorAll('.card-div');
+        const cardcontainer = document.querySelector('.cardsDiv')
 
         // card subform selectors
         const subForm = document.querySelectorAll('.subform');
+        const subform = cardcontainer.querySelector('.subform');
 
         // Search Pop-up Selectors
         const searchModal = document.querySelector('.search-wrapper');
@@ -440,29 +442,41 @@ domIsReady (function() {
         const btnCloseSearchModal = searchModal.querySelector('#btn-close-modal');
         const filterDiv = document.querySelector('.filterDiv');
         const cardcollapse = document.querySelector('.card-collapse');
+        
 
         let pnClicked = "";
 
 
         [...cards].forEach((card, index) => {
-            const subform = card.querySelector('.subform');
-            const ticketNum = card.querySelector(`#tick${index}`).innerText;
-            const ticketNumInput = subform.querySelector('input[name=ticketnumber]');
-            ticketNumInput.value = ticketNum;
-
-            const createdByInput = subform.querySelector('input[name=createdBy]');
-            createdByInput.value = getUserId();;
-
             const btn = card.querySelector('.addForm');
             btn.addEventListener('click', e => {
                 e.preventDefault();
-                
+              
                 if (subform.classList.contains('none')) {
+                    const ticketNum = e.target.parentElement.querySelector(`#tick${index}`).innerText;
+                    const ticketNumInput = cardcontainer.querySelector('input[name=ticketnumber]');
+                    ticketNumInput.value = ticketNum;
+
+                    const createdByInput = cardcontainer.querySelector('input[name=createdBy]');
+                    createdByInput.value = getUserId();
+
+                    const createdAtInput = cardcontainer.querySelector('input[name=createdAt]');
+                    let now = new Date();
+                    createdAtInput.value = now; 
+
+                    const box = e.target.parentElement.nextElementSibling.getBoundingClientRect()
+                    console.log(box)
+                    subform.style.position = 'absolute';
+                    subform.style.top = `${window.scrollY + box.top - 450}px`;
+                    subform.style.left = `${((window.innerWidth - box.width) / 2)*.55}px`;
+                    subform.style.zIndex = '5';
+
                     subform.classList.remove('none');
-                    btn.innerText = 'Close';
+                    // btn.innerText = 'Close';
                 } else {
                     subform.classList.add('none');
-                    btn.innerText = 'Add';
+                    btn.innerText = 'Add New Details Form';
+                    
                 }
                 
             })
@@ -470,11 +484,10 @@ domIsReady (function() {
 
 
         [...subForm].forEach((form, idx) => {
-            const pn = form.querySelector(`#pn${idx}`);
+            const pn = form.querySelector(`#pn-sub`);
             pn.addEventListener('click',  (e) => {
                  e.preventDefault();
                 openPartsSearchModal(e);
-                // createPartFromSearch(searchFields, pn, bodyNumTarget)
             });
         });
 

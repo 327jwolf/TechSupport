@@ -277,6 +277,20 @@ h1, h2, h3, h4 {
   cursor: pointer;
 }
 
+.cardsDiv {
+  position: relative;
+}
+
+.cardsDiv label {
+  color: var(--primary-txt-color);
+}
+
+.cardsDiv .fld {
+  padding: .25rem;
+  background-color: rgb(239, 239, 239);
+  border-radius: .2rem;
+}
+
 .search > * {
   pointer-events: none;
 }
@@ -425,10 +439,6 @@ li {
   border-radius: .5rem;
   padding: .25rem;
   color: red;
-}
-
-.fld {
-  background-color: aliceblue;
 }
 
 /* .side-bar{

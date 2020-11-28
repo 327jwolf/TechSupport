@@ -31,12 +31,12 @@ domIsReady(function() {
         // console.log(cardArray)
 
         cardArray.forEach(card => {
-            card.style.display = "";
+            card.parentElement.style.display = "";
             let cardHeaderItems = card.querySelectorAll('.fld');
-            // let cardDivItems = card.querySelectorAll('.card-div-items');
+            // let cardDiv = card.querySelectorAll('.card-div');
             let headerItems = filterFields(cardHeaderItems, filterObj);
             // let divItems = filterFields(cardDivItems, filterObj);
-            headerItems.forEach(item => card.style.display = 'none');
+            headerItems.forEach(item => card.parentElement.style.display = 'none');
             // divItems.forEach(item => card.style.display = 'none');
         })
     }
