@@ -66,7 +66,7 @@ router.get('/dashboard', redirectLogin,  async function(req, res, next){
     techInfoSubs.sort((a,b) => {
       var createdAtA = new Date(a.createdAt).valueOf(); 
       var createdAtB = new Date(b.createdAt).valueOf(); 
-      console.log(createdAtA, createdAtB)
+      // console.log(createdAtA, createdAtB)
 
       if (createdAtA < createdAtB) {
         return 1;

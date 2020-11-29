@@ -9,9 +9,6 @@ const { schema: registrationSchema } = require('../../middleware/registerValidat
 const { schema: loginSchema } = require('../../middleware/loginValidator.js');
 const { redirectLogin } = require('../../middleware/auth');
 
-
-const { locals } = require('../../app.js');
-
 const mainTitle = 'Technical Service Support';
 
 router.get('/', function(req, res, next) {
