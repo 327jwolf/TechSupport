@@ -463,15 +463,13 @@ domIsReady (function() {
                     const createdAtInput = cardcontainer.querySelector('input[name=createdAt]');
                     let now = new Date();
                     createdAtInput.value = now; 
-                    if(e.target.parentElement.nextElementSibling !== null){
-                        const box = e.target.parentElement.nextElementSibling.getBoundingClientRect();
-                        console.log(box)
-                        subform.style.position = 'absolute';
-                        subform.style.top = `${window.scrollY + box.top - 450}px`;
-                        subform.style.left = `${((window.innerWidth - box.width) / 2)*.55}px`;
-                        subform.style.zIndex = '5';
-                    }
-                    
+
+                    const box = e.target.parentElement.getBoundingClientRect()
+                    // console.log(box)
+                    subform.style.position = 'absolute';
+                    subform.style.top = `${window.scrollY + box.bottom - 420}px`;
+                    subform.style.left = `${((window.innerWidth - box.width) / 2)*.55}px`;
+                    subform.style.zIndex = '5';
 
                     subform.classList.remove('none');
                     // btn.innerText = 'Close';
