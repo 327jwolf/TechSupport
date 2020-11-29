@@ -464,7 +464,7 @@ domIsReady (function() {
                     let now = new Date();
                     createdAtInput.value = now; 
 
-                    const box = e.target.parentElement.nextElementSibling.getBoundingClientRect()
+                    const box = e.target.parentElement.nextElementSibling ? e.target.parentElement.nextElementSibling.getBoundingClientRect() : e.target.parentElement.getBoundingClientRect();
                     console.log(box)
                     subform.style.position = 'absolute';
                     subform.style.top = `${window.scrollY + box.top - 450}px`;
