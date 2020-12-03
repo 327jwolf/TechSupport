@@ -492,6 +492,7 @@ domIsReady (function() {
         const btnCloseEditDetails = document.querySelectorAll('#btn-close-editdetails');
         const editDetailsForm = document.querySelector('.details-form');
         const editDetailsPartsSearchBtn = editDetailsForm.querySelector('#pn');
+        const editDetailUL = editDetailsForm.querySelector('ul');
 
         editDetailsPartsSearchBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -502,6 +503,8 @@ domIsReady (function() {
             if(element.classList.contains('none')){
                 element.classList.remove('none');
             } else {
+                let liElements = editDetailUL.querySelectorAll('li');
+                liElements.forEach(li => li.remove());
                 element.classList.add('none');
             }
         }
@@ -535,11 +538,9 @@ domIsReady (function() {
                 let editHeaderInputs = editHeaderDiv.querySelectorAll('input');
                 [...editHeaderInputs].forEach(input => {
                     if (datakeys[input.getAttribute('name')]) {
-                        input.value = datakeys[input.getAttribute('name')]
-                        
+                        input.value = datakeys[input.getAttribute('name')];
                     }
                 });
-                // console.log(datakeys);
                 toggleEditForm(editHeaderDiv);
             })
 
@@ -555,7 +556,7 @@ domIsReady (function() {
                 let partsArr = [];
                 [...detailsDivFields].forEach((item, idx) => {
                     let itemKey = item.getAttribute('data-key').split(': ');
-                    console.log(itemKey)
+                    // console.log(itemKey)
                     let partObj = {};
                     if(itemKey[0] === 'part'){
                         partObj[itemKey[0]] = itemKey[1];
@@ -572,7 +573,9 @@ domIsReady (function() {
                 });
 
                 let editDetailInputs = editDetailsDiv.querySelectorAll('input');
-                [...editDetailInputs].forEach(input => { input.value = datakeys[input.getAttribute('name')] });
+                [...editDetailInputs].forEach(input => { 
+                    datakeys[input.getAttribute('name')] ? input.value = datakeys[input.getAttribute('name')] : input.value = "";
+                });
 
                 let editDetailTextArea = editDetailsDiv.querySelectorAll('textarea');
                 [...editDetailTextArea].forEach(textArea => { textArea.innerText = datakeys[textArea.getAttribute('name')] });
@@ -580,12 +583,24 @@ domIsReady (function() {
                 let editDetailSelect = editDetailsDiv.querySelectorAll('select');
                 [...editDetailSelect].forEach(select => { select.value = datakeys[select.getAttribute('name')] });
 
-                partsArr.forEach(part => {
-                    // console.log(part.part)
-                    // console.log(part.status)
+                let partsFromObj = datakeys.part;
+                partsFromObj.forEach((part, idx) => {
+                    let partItem = {};
+                    let num = part.part.split(' - ')[0];
+                    let desc = part.part.split(' - ')[1];
+                    let index = idx + 1000;
+                    partItem.partNumber = num;
+                    partItem.description = desc;
+                    createPartSearchResultElement(index, partItem, editDetailsPartsSearchBtn);
+                    let partNeeded = editDetailsDiv.querySelector(`#needed-${index}`);
+                    let partMissing = editDetailsDiv.querySelector(`#missing-${index}`);
+                    if (part.status === 'Needed') {
+                        partNeeded.checked = true;
+                    } else {
+                        partMissing.checked = true;
+                    }
+                   
                 })
-
-                console.log(datakeys);
                 toggleEditForm(editDetailsDiv);
             })
         });
@@ -669,17 +684,7 @@ domIsReady (function() {
 
                             elContainer.addEventListener('click', (e) => {
                                 e.preventDefault();
-                                let inputField = '';
-                                let htmlPartsSection = createPartSearchResultElement(j);
-
-                                pnClicked.nextElementSibling.insertAdjacentHTML('beforeend', htmlPartsSection);
-                                inputField = document.querySelector(`#inputParts-${j}`);
-                                let removeBtn = document.querySelector(`#remove-btn${j}`);
-                                removeBtn.addEventListener('click', e => {
-                                    e.preventDefault();
-                                    e.target.parentElement.parentElement.remove()
-                                });
-                                inputField.value = `${item.partNumber} - ${item.description}`;
+                                createPartSearchResultElement(j, item, pnClicked);
                                 j++;
                                 document.querySelector('#number-search').value = '';
                                 document.querySelector('#desc-search').value = '';
@@ -719,8 +724,9 @@ domIsReady (function() {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    function createPartSearchResultElement(idx){
-        return `
+    function createPartSearchResultElement(idx, item, pnClicked){
+        // let inputField = '';
+        let htmlPartsSection = `
             <li id="part-li${idx}">
                 <div class="gc3" id="parts-div${idx}">
                     <input class="form-control w50" id="inputParts-${idx}" type="text" name="parts[${idx}][part]" placeholder="">
@@ -732,7 +738,14 @@ domIsReady (function() {
                 </div>
             </li>
         `;
-
+        pnClicked.nextElementSibling.insertAdjacentHTML('beforeend', htmlPartsSection);
+        let inputField = document.querySelector(`#inputParts-${idx}`);
+        let removeBtn = document.querySelector(`#remove-btn${idx}`);
+        removeBtn.addEventListener('click', e => {
+            e.preventDefault();
+            e.target.parentElement.parentElement.remove()
+        });
+        inputField.value = `${item.partNumber} - ${item.description}`;
     }
 
     function createPartSearchModalItems(item, idx){
