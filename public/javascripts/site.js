@@ -584,23 +584,26 @@ domIsReady (function() {
                 [...editDetailSelect].forEach(select => { select.value = datakeys[select.getAttribute('name')] });
 
                 let partsFromObj = datakeys.part;
-                partsFromObj.forEach((part, idx) => {
-                    let partItem = {};
-                    let num = part.part.split(' - ')[0];
-                    let desc = part.part.split(' - ')[1];
-                    let index = idx + 1000;
-                    partItem.partNumber = num;
-                    partItem.description = desc;
-                    createPartSearchResultElement(index, partItem, editDetailsPartsSearchBtn);
-                    let partNeeded = editDetailsDiv.querySelector(`#needed-${index}`);
-                    let partMissing = editDetailsDiv.querySelector(`#missing-${index}`);
-                    if (part.status === 'Needed') {
-                        partNeeded.checked = true;
-                    } else {
-                        partMissing.checked = true;
-                    }
-                   
-                })
+                if (partsFromObj) {
+                    partsFromObj.forEach((part, idx) => {
+                        let partItem = {};
+                        let num = part.part.split(' - ')[0];
+                        let desc = part.part.split(' - ')[1];
+                        let index = idx + 1000;
+                        partItem.partNumber = num;
+                        partItem.description = desc;
+                        createPartSearchResultElement(index, partItem, editDetailsPartsSearchBtn);
+                        let partNeeded = editDetailsDiv.querySelector(`#needed-${index}`);
+                        let partMissing = editDetailsDiv.querySelector(`#missing-${index}`);
+                        if (part.status === 'Needed') {
+                            partNeeded.checked = true;
+                        } else {
+                            partMissing.checked = true;
+                        }
+                       
+                    })
+                }
+                
                 toggleEditForm(editDetailsDiv);
             })
         });
