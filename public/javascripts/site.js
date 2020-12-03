@@ -415,6 +415,8 @@ domIsReady (function() {
 
     
     function supportForm(){
+
+        let pnClicked = "";
         // Main form Selectors
         const entryFormOpen = document.querySelector('.open-hidden');
         const entryFormWrapper = document.querySelector('.form-wrapper');
@@ -443,8 +445,6 @@ domIsReady (function() {
         const filterDiv = document.querySelector('.filterDiv');
         const cardcollapse = document.querySelector('.card-collapse');
         
-
-        let pnClicked = "";
 
 
         [...cards].forEach((card, index) => {
@@ -479,6 +479,114 @@ domIsReady (function() {
                     
                 }
                 
+            })
+        });
+
+        const editHeaderDiv = document.querySelector('.edit-header');
+        const editDetailsDiv = document.querySelector('.edit-details');
+
+        const btnEditHeaders = document.querySelectorAll('.btn-edit-header');
+        const btnEditDetails = document.querySelectorAll('.btn-edit-details');
+        
+        const btnCloseEditHeader = document.querySelectorAll('#btn-close-editheader');
+        const btnCloseEditDetails = document.querySelectorAll('#btn-close-editdetails');
+        const editDetailsForm = document.querySelector('.details-form');
+        const editDetailsPartsSearchBtn = editDetailsForm.querySelector('#pn');
+
+        editDetailsPartsSearchBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openPartsSearchModal(e);
+        });
+
+        function toggleEditForm(element) {
+            if(element.classList.contains('none')){
+                element.classList.remove('none');
+            } else {
+                element.classList.add('none');
+            }
+        }
+
+        [...btnCloseEditHeader].forEach((closeBtn) => {
+            closeBtn.addEventListener('click', e => {
+                let targetDiv = e.target.parentElement.parentElement;
+                toggleEditForm(editHeaderDiv);
+            })
+
+        });
+
+        [...btnCloseEditDetails].forEach((closeBtn) => {
+            closeBtn.addEventListener('click', e => {
+                let targetDiv = e.target.parentElement.parentElement;
+                toggleEditForm(editDetailsDiv);
+            })
+
+        });
+
+        [...btnEditHeaders].forEach((headerBtn) => {
+            headerBtn.addEventListener('click', e => {
+                let datakeys = {};
+                let headerDiv = e.target.parentElement.parentElement;
+                let headerDivFields = headerDiv.querySelectorAll('.fld');
+                [...headerDivFields].forEach(item => {
+                    let itemKey = item.getAttribute('data-key').split(': ');
+                    datakeys[itemKey[0]] = itemKey[1]
+                });
+
+                let editHeaderInputs = editHeaderDiv.querySelectorAll('input');
+                [...editHeaderInputs].forEach(input => {
+                    if (datakeys[input.getAttribute('name')]) {
+                        input.value = datakeys[input.getAttribute('name')]
+                        
+                    }
+                });
+                // console.log(datakeys);
+                toggleEditForm(editHeaderDiv);
+            })
+
+        });
+        
+        [...btnEditDetails].forEach((detailBtn) => {
+            detailBtn.addEventListener('click', e => {
+                e.preventDefault();
+                pnClicked = e.target;
+                let datakeys = {};
+                let detailDiv = e.target.parentElement.parentElement;
+                let detailsDivFields = detailDiv.querySelectorAll('.fld');
+                let partsArr = [];
+                [...detailsDivFields].forEach((item, idx) => {
+                    let itemKey = item.getAttribute('data-key').split(': ');
+                    console.log(itemKey)
+                    let partObj = {};
+                    if(itemKey[0] === 'part'){
+                        partObj[itemKey[0]] = itemKey[1];
+                        partsArr.push(partObj);
+                        datakeys[itemKey[0]] = partsArr;
+                    } else if(itemKey[0]=== 'status'){
+                        partObj[itemKey[0]] = itemKey[1];
+                        // partsArr.push(partObj);
+                        let len = datakeys.part.length;
+                        datakeys.part[len - 1][itemKey[0]] = itemKey[1];
+                    } else {
+                        datakeys[itemKey[0]] = itemKey[1];
+                    }
+                });
+
+                let editDetailInputs = editDetailsDiv.querySelectorAll('input');
+                [...editDetailInputs].forEach(input => { input.value = datakeys[input.getAttribute('name')] });
+
+                let editDetailTextArea = editDetailsDiv.querySelectorAll('textarea');
+                [...editDetailTextArea].forEach(textArea => { textArea.innerText = datakeys[textArea.getAttribute('name')] });
+
+                let editDetailSelect = editDetailsDiv.querySelectorAll('select');
+                [...editDetailSelect].forEach(select => { select.value = datakeys[select.getAttribute('name')] });
+
+                partsArr.forEach(part => {
+                    // console.log(part.part)
+                    // console.log(part.status)
+                })
+
+                console.log(datakeys);
+                toggleEditForm(editDetailsDiv);
             })
         });
 
@@ -531,6 +639,7 @@ domIsReady (function() {
             openPartsSearchModal(e);
         });
 
+        
         function openPartsSearchModal(e) {
             e.preventDefault();
             pnClicked = e.target
