@@ -574,7 +574,10 @@ domIsReady (function() {
 
                 let editDetailInputs = editDetailsDiv.querySelectorAll('input');
                 [...editDetailInputs].forEach(input => { 
-                    datakeys[input.getAttribute('name')] ? input.value = datakeys[input.getAttribute('name')] : input.value = "";
+                    if (input.getAttribute('name') !== "_csrf") {
+                        datakeys[input.getAttribute('name')]  ? input.value = datakeys[input.getAttribute('name')] : input.value = "";
+                    }
+                    
                 });
 
                 let editDetailTextArea = editDetailsDiv.querySelectorAll('textarea');

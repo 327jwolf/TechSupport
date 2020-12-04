@@ -127,21 +127,21 @@ div.cardsDiv.mt1
                             label(for="ticket-number") Ticket Number
                             input.form-control.w95(type="text",name="ticketnumber" placeholder="Auto Generated" readonly)
                         div.form-group
-                            label(for="created-At") Timestamp
+                            label(for="createdAt") Timestamp
                             input.form-control.w95(type="text",name="createdAt" placeholder="Auto Generated" readonly)
                         div.form-group
-                            label(for="created-By") Created By
+                            label(for="createdBy") Created By
                             input.form-control.w95(type="text",name="createdBy" placeholder="Auto Generated" readonly)
                     div.form-section.gc-r1 
                         div.form-group
                             label(for="job-number") Job Number
                             input.form-control.w95(type="text",name="jobnumber" placeholder="Job Number" required)
                         div.form-group
-                            label(for="machine-type") Machine Type
+                            label(for="machinetype") Machine Type
                             input.form-control.w95(type="text",name="machinetype" placeholder="Machine Type" list="machineList" required)
                             datalist#machineList
                         div.form-group
-                            label(for="total-washes") Total Washes
+                            label(for="totalwashes") Total Washes
                             input.form-control.w95(type="text",name="totalwashes" placeholder="Total Washes")
                     div.form-section.gc-r1 
                         div.form-group
@@ -157,7 +157,7 @@ div.cardsDiv.mt1
                         button.btn.btn-standard#btn-close-editdetails(value="X") X
             div.edit-details-form-wrapper
                 form.details-form(action="/editDetails" method="post")
-                    input(type="hidden", name="_csrf", value=csrfToken)
+                    input(type="hidden", name="_csrf", value= csrfToken)
                     input(type="hidden" name="_id")
                     div.form-section.gc-r1
                         div.form-group
@@ -170,6 +170,9 @@ div.cardsDiv.mt1
                             label.inline-label(for="resolved") Resolved
                             input.form-control(type="radio", id="pending-edit", name="ticketstatus", value="Pending" checked)
                             label.inline-label(for="pending") Pending
+                        div.form-group
+                            label(for="createdBy") Created By
+                            input.form-control.w95(type="text",name="createdBy" placeholder="Auto Generated" readonly)
 
                     div.form-section.gc-r1
                         input(type="text",name="contactid" placeholder="Contact ID" hidden)
@@ -278,7 +281,7 @@ div.cardsDiv.mt1
                             div.card-section.gc-r1
                                 
                                 //- div.none#subident(data-key=`_id: ${item._id}`) #{item._id}
-                                div.none(id=`subident${idx}` data-key=`_id: ${item._id}`) #{item._id}
+                                div.fld.none(id=`subident${idx}` data-key=`_id: ${item._id}`) #{item._id}
                                 div
                                     label Problem Catagory:
                                     div.fld(id=`probcat${idx}` data-key=`problemcatagory: ${item.problemcatagory}`) #{item.problemcatagory}
@@ -286,7 +289,8 @@ div.cardsDiv.mt1
                                     label Status:
                                     div.fld(id=`stat${idx}` data-key=`ticketstatus: ${item.ticketstatus}`) #{item.ticketstatus}
                                 div
-
+                                    label CreatedBy:
+                                    div.fld(id=`created${idx}` data-key=`createdBy: ${item.createdBy}`) #{item.createdBy}
                                 div
                                     label Contact Name: 
                                     div.fld(id=`cn${idx}` data-key=`contactname: ${item.contactname}`) #{item.contactname}

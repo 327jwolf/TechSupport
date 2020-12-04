@@ -112,6 +112,18 @@ router.post('/techInfoSubform', async function(req, res, next){
   res.redirect('/dashboard');
 })
 
+router.post('/editHeader', async function(req, res, next){
+  let date = new Date(req.body['createdAt'])
+  console.log(req.body)
+  res.redirect('/dashboard');
+})
+
+router.post('/editDetails', async function(req, res, next){
+  let date = new Date(req.body['createdAt'])
+  console.log(req.body)
+  res.redirect('/dashboard');
+})
+
 async function createContact(req) {
   let contact = {
     'contactname': req.body.contactname,
