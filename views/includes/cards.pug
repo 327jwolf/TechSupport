@@ -147,6 +147,7 @@ div.cardsDiv.mt1
                         div.form-group
                             div(class="text-right") 
                                 button.btn.btn-standard(type="submit" value="Submit") Submit
+                                
     div.edit-details.none
         div.container.mt1.pb-1.pt-1
             div
@@ -274,7 +275,9 @@ div.cardsDiv.mt1
                         label Total Washes:
                         div.fld.mt1(id=`tw${idx}` data-key=`totalwashes: ${doc.totalwashes}`) #{doc.totalwashes}
                     div
-                        button.btn.btn-standard.btn-edit-header Edit Header
+                        div
+                            button.btn.btn-standard.btn-edit-header Edit Header
+                        div.clickmessage
                 each item in techInfoSub
                     if item.ticketnumber === doc.ticketnumber
                         .form-section.detail-section
@@ -335,6 +338,7 @@ div.cardsDiv.mt1
                                 div.fld(id=`xnote${idx}` data-key=`notes: ${item.notes}`) #{item.notes}
                             div.card-section.gc-r3.mt1
                                 button.btn.btn-standard.btn-edit-details Edit Details
+                            div.clickmessage
             button.btn.btn-standard.addForm(style="margin-left: 2rem; margin-bottom: 1rem;") Add New Details Form
             
                         

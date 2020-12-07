@@ -417,6 +417,9 @@ domIsReady (function() {
     function supportForm(){
 
         let pnClicked = "";
+        const navbar = document.querySelector('.nav.container');
+        let userIdElement = navbar.querySelector('input[name=userId]');
+        let loggedInUser = userIdElement.value;
         // Main form Selectors
         const entryFormOpen = document.querySelector('.open-hidden');
         const entryFormWrapper = document.querySelector('.form-wrapper');
@@ -529,6 +532,7 @@ domIsReady (function() {
             headerBtn.addEventListener('click', e => {
                 let datakeys = {};
                 let headerDiv = e.target.parentElement.parentElement;
+                let clickmessage = headerDiv.querySelector('.clickmessage');
                 let headerDivFields = headerDiv.querySelectorAll('.fld');
                 [...headerDivFields].forEach(item => {
                     let itemKey = item.getAttribute('data-key').split(': ');
@@ -541,7 +545,12 @@ domIsReady (function() {
                         input.value = datakeys[input.getAttribute('name')];
                     }
                 });
-                toggleEditForm(editHeaderDiv);
+                if (loggedInUser === datakeys.createdBy) {
+                    toggleEditForm(editHeaderDiv);
+                } else {
+                    clickmessage.innerText = 'You do not have permission to edit this section!!  Only the owner can edit this form!!!';
+                    setTimeout(() => clickmessage.innerText = "", 10000);
+                }
             })
 
         });
@@ -552,6 +561,7 @@ domIsReady (function() {
                 pnClicked = e.target;
                 let datakeys = {};
                 let detailDiv = e.target.parentElement.parentElement;
+                let clickmessage = detailDiv.querySelector('.clickmessage');
                 let detailsDivFields = detailDiv.querySelectorAll('.fld');
                 let partsArr = [];
                 [...detailsDivFields].forEach((item, idx) => {
@@ -606,8 +616,12 @@ domIsReady (function() {
                        
                     })
                 }
-                
-                toggleEditForm(editDetailsDiv);
+                if (loggedInUser === datakeys.createdBy) {
+                    toggleEditForm(editDetailsDiv);
+                } else {
+                    clickmessage.innerText = 'You do not have permission to edit this section!! Only the owner can edit this form!!!';
+                    setTimeout(() => clickmessage.innerText = "", 10000);
+                }
             })
         });
 
