@@ -159,6 +159,7 @@ div.cardsDiv.mt1
                 form.details-form(action="/editDetails" method="post")
                     input(type="hidden", name="_csrf", value= csrfToken)
                     input(type="hidden" name="_id")
+                    input(type="hidden" name="ticketnumber")
                     div.form-section.gc-r1
                         div.form-group
                             label(for="problem-catagory") Problem-Catagory
@@ -282,6 +283,7 @@ div.cardsDiv.mt1
                                 
                                 //- div.none#subident(data-key=`_id: ${item._id}`) #{item._id}
                                 div.fld.none(id=`subident${idx}` data-key=`_id: ${item._id}`) #{item._id}
+                                div.fld.none(id=`ticketNumber${idx}` data-key=`ticketnumber: ${item.ticketnumber}`) #{item.ticketnumber}
                                 div
                                     label Problem Catagory:
                                     div.fld(id=`probcat${idx}` data-key=`problemcatagory: ${item.problemcatagory}`) #{item.problemcatagory}
@@ -318,17 +320,18 @@ div.cardsDiv.mt1
                                     div.fld(id=`zp${idx}` data-key=`zip: ${item.zip}`) #{item.zip}
                                 div
                             div.card-section.gc-r3
-                                div.w100 Parts
-                                each part in item.parts
-                                    if part.part !== ""
-                                        div.w100(style="margin-top: .5rem;")
-                                            div.fld.inline-label.w70#prts(data-key=`part: ${part.part}`) #{part.part}
-                                            div.fld.inline-label.w20#stat(data-key=`status: ${part.status}`) #{part.status}
+                                div.w100 Parts:
+                                if part
+                                    each part in item.parts
+                                        if part.part !== ""
+                                            div.w100(style="margin-top: .5rem;")
+                                                div.fld.inline-label.w70#prts(data-key=`part: ${part.part}`) #{part.part}
+                                                div.fld.inline-label.w20#stat(data-key=`status: ${part.status}`) #{part.status}
                             div.card-section.gc-r3 
-                                div Resolution
+                                div Resolution:
                                 div.fld(id=`sol${idx}` data-key=`resolution: ${item.resolution}`) #{item.resolution}
                             div.card-section.gc-r3
-                                div Notes
+                                div Notes:
                                 div.fld(id=`xnote${idx}` data-key=`notes: ${item.notes}`) #{item.notes}
                             div.card-section.gc-r3.mt1
                                 button.btn.btn-standard.btn-edit-details Edit Details

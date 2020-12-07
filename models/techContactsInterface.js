@@ -103,11 +103,6 @@ function updateContact(id, keyValueObj){
             } catch (err) {
                 reject(err)
             }
-            // if (err) {
-            //     reject(err)
-            // } else {
-            //     resolve({numaffected ,doc})
-            // }
         })
     })
 }
@@ -116,6 +111,7 @@ function updateContact(id, keyValueObj){
 
 module.exports = {
     insertContact,
+    updateContact,
     findContactByName,
     findContactById,
     findContactByPhone,

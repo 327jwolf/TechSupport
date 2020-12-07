@@ -80,6 +80,18 @@ function insertTechInfo(techInfoObj) {
     })
 }
 
+function updateTechInfo(techInfoObj) {
+    return new Promise((resolve, reject) => {
+        db.techInfo.update({'_id': techInfoObj._id}, techInfoObj, {returnUpdatedDocs: true, multi: false}, (err, numaffected, doc) => {
+            try {
+                resolve(numaffected, doc)
+            } catch (err) {
+                reject(err)
+            }
+        })
+    })
+}
+
 function findAllTechInfo() {
     return new Promise((resolve, reject) => {
         db.techInfo.find({}, (err, docs) => {
@@ -98,6 +110,18 @@ function insertTechInfoSub(techInfoSubObj) {
         db.techInfoSub.insert(techInfoSubObj, (err, docs) => {
             try {
                 resolve(docs)
+            } catch (err) {
+                reject(err)
+            }
+        })
+    })
+}
+
+function updateTechInfoSub(techInfoSubObj) {
+    return new Promise((resolve, reject) => {
+        db.techInfoSub.update({'_id': techInfoSubObj._id}, techInfoSubObj, {returnUpdatedDocs: true, multi: false}, (err, numaffected, doc) => {
+            try {
+                resolve(numaffected, doc)
             } catch (err) {
                 reject(err)
             }
@@ -137,8 +161,10 @@ module.exports = {
     db,
     getAutoIncrementValue,
     insertTechInfo,
+    updateTechInfo,
     findAllTechInfo,
     insertTechInfoSub,
+    updateTechInfoSub,
     findAllTechInfoSubbyTickerNumber,
     findAllTechInfoSub,
   };

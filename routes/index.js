@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-const { getAutoIncrementValue, insertTechInfo, insertTechInfoSub, findAllTechInfo, findAllTechInfoSub } = require('../models/techInfoInterface.js');
+const { getAutoIncrementValue, insertTechInfo, updateTechInfo, insertTechInfoSub, updateTechInfoSub, findAllTechInfo, findAllTechInfoSub } = require('../models/techInfoInterface.js');
 const { findOneUser } = require('../models/usersDBInterface.js');
-const { insertContact } = require('../models/techContactsInterface.js');
+const { insertContact, updateContact } = require('../models/techContactsInterface.js');
 // const { countryCodes } = require('../middleware/countryCodes.js');
 const { codeArray: countryCodes2 } = require('../middleware/countryCodes2.js');
 const { redirectLogin } = require('../middleware/auth');
@@ -113,13 +113,15 @@ router.post('/techInfoSubform', async function(req, res, next){
 })
 
 router.post('/editHeader', async function(req, res, next){
-  let date = new Date(req.body['createdAt'])
+  let date = new Date(req.body['createdAt']);
+  await createUpdateTectInfoHead(req);
   console.log(req.body)
   res.redirect('/dashboard');
 })
 
 router.post('/editDetails', async function(req, res, next){
   let date = new Date(req.body['createdAt'])
+  await createUpdateTechInfoSub(req)
   console.log(req.body)
   res.redirect('/dashboard');
 })
@@ -144,6 +146,28 @@ async function createContact(req) {
   }
 }
 
+async function createUpdateContact(req) {
+  let id = req.body._id;
+  let contact = {
+    '_id': req.body._id,
+    'contactname': req.body.contactname,
+    'contactcc': req.body.contactcc,
+    'contactphone': req.body.contactphone,
+    'email': req.body.email,
+    'address': req.body.address,
+    'city': req.body.city,
+    'state': req.body.state,
+    'country': req.body.country,
+    'zip': req.body.zip,
+  };
+  try {
+    const result = await updateContact(id, contact);
+    return result;
+  } catch (error) {
+    console.error('insertContact Error: ', error);
+  }
+}
+
 async function createTectInfoHead(req) {
   let techInfoHeadObj = {
     'ticketnumber': req.body.ticketnumber,
@@ -155,6 +179,24 @@ async function createTectInfoHead(req) {
   };
   try {
     const result = await insertTechInfo(techInfoHeadObj);
+    return result;
+  } catch (error) {
+    console.error('Error inserting into techInf db: ', error);
+  }
+}
+
+async function createUpdateTectInfoHead(req) {
+  let techInfoHeadObj = {
+    '_id': req.body._id,
+    'ticketnumber': req.body.ticketnumber,
+    'createdAt': req.body.createdAt,// date.getTime(),
+    'createdBy': req.body.createdBy,
+    'jobnumber': req.body.jobnumber,
+    'machinetype': req.body.machinetype,
+    'totalwashes': req.body.totalwashes
+  };
+  try {
+    const result = await updateTechInfo(techInfoHeadObj);
     return result;
   } catch (error) {
     console.error('Error inserting into techInf db: ', error);
@@ -189,5 +231,33 @@ async function createTechInfoSub(req) {
   }
 }
 
+async function createUpdateTechInfoSub(req) {
+  let techInfoSubObj = {
+    '_id': req.body._id,
+    'ticketnumber': req.body.ticketnumber,
+    'contactname': req.body.contactname,
+    'contactcc': req.body.contactcc,
+    'contactphone': req.body.contactphone,
+    'email': req.body.email,
+    'address': req.body.address,
+    'city': req.body.city,
+    'state': req.body.state,
+    'country': req.body.country,
+    'zip': req.body.zip,
+    'problemcatagory': req.body.problemcatagory,
+    'ticketstatus': req.body.ticketstatus,
+    'parts': req.body.parts,
+    'resolution': req.body.resolution,
+    'notes': req.body.notes,
+    'createdBy': req.body.createdBy,
+    'createdAt': req.body.createdAt,
+  };
+  try {
+    const result = await updateTechInfoSub(techInfoSubObj);
+    return result;
+  } catch (error) {
+    console.error('Error inserting into techInfSub db: ', error);
+  }
+}
 
 module.exports = router;

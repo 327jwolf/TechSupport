@@ -22,7 +22,6 @@ body {
   box-sizing: border-box;
 }
 
-
 body {
   padding: 25px;
   font: 1.0em "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -49,7 +48,6 @@ select {
   width: 95%;
   margin: auto;
 }
-
 
 .header {
   display: block;
@@ -88,7 +86,6 @@ h1, h2, h3, h4 {
   color: var(--primary-txt-color);
   margin: .75rem;
 }
-
 
 .toggle-theme {
   display: block;
@@ -148,7 +145,6 @@ h1, h2, h3, h4 {
   margin: 1rem 1rem;
 }
 
-
 .form-signin .form-group {
   display: block;
   position: relative;
@@ -198,7 +194,6 @@ h1, h2, h3, h4 {
   padding: .5rem;
 }
 
-
 .form-section {
   /* display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -207,7 +202,6 @@ h1, h2, h3, h4 {
   margin: .5rem .5rem;
   border: 1px solid var(--bg-shadow-color);
   border-radius: .5rem;
-
 }
 
 .form1-header{
@@ -220,18 +214,11 @@ h1, h2, h3, h4 {
 
 .form-wrapper{
   display: none;
-
-}
-
-.main-form .form-group {
-  
 }
 
 .main-form .form-group label {
   display: block;
 }
-
-
 
 .main-form .form-group input {
   /* display: block; */
@@ -462,6 +449,7 @@ li {
   box-shadow: .5rem .5rem 1.2rem var(--bg-shadow-color);
   overflow: hidden;
 }
+
 /* Search Modal */
 .search-wrapper {
   display: none;
@@ -492,7 +480,6 @@ li {
   border: 1px solid var(--bg-shadow-color);
   border-radius: .5rem;
 }
-
 
 .search-parts {
   display: block;
@@ -565,7 +552,6 @@ li {
   animation-name:modalopen;
   animation-duration:1s;
 }
-
 
 .filterDiv {
   animation-name:modalopen;
