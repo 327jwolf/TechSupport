@@ -115,14 +115,12 @@ router.post('/techInfoSubform', async function(req, res, next){
 router.post('/editHeader', async function(req, res, next){
   let date = new Date(req.body['createdAt']);
   await createUpdateTectInfoHead(req);
-  console.log(req.body)
   res.redirect('/dashboard');
 })
 
 router.post('/editDetails', async function(req, res, next){
-  let date = new Date(req.body['createdAt'])
-  await createUpdateTechInfoSub(req)
-  console.log(req.body)
+  let date = new Date(req.body['createdAt']);
+  await createUpdateTechInfoSub(req);
   res.redirect('/dashboard');
 })
 
