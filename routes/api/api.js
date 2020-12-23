@@ -160,7 +160,7 @@ router.get('/problemcatagory/add/:name', async function(req, res, next) {
     'catagoryname': req.params.name.trim(),
   }
   await addProblemCatagory(mtobj)
-  .then(x => res.json(x))
+  .then(x => console.log(res.json(x)))
   .catch(err => console.error(err))
 })
 

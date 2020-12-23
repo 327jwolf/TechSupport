@@ -18,7 +18,7 @@ div.cardsDiv.mt1
                 //- include      ./dashLowerForm.pug
                 div.form-section.gc-r1
                     div.form-group
-                        label(for="problem-catagory") Problem-Catagory
+                        label(for="problem-catagory") Problem-Category
                         input.form-control.w95(type="text",name="problemcatagory" placeholder="Problem Catagory" list="problemList")
                         div.msg.hide(id=`problem-catagory-sub`)
                         datalist(id=`problemList-sub`)
@@ -163,7 +163,7 @@ div.cardsDiv.mt1
                     input(type="hidden" name="ticketnumber")
                     div.form-section.gc-r1
                         div.form-group
-                            label(for="problem-catagory") Problem-Catagory
+                            label(for="problem-catagory") Problem-Category
                             input.form-control.w95(type="text",name="problemcatagory" placeholder="Problem Catagory" list="problemList")
                             datalist#problemList-edit
                         div.form-group.radio#resolved-pending
@@ -288,7 +288,7 @@ div.cardsDiv.mt1
                                 div.fld.none(id=`subident${idx}` data-key=`_id: ${item._id}`) #{item._id}
                                 div.fld.none(id=`ticketNumber${idx}` data-key=`ticketnumber: ${item.ticketnumber}`) #{item.ticketnumber}
                                 div
-                                    label Problem Catagory:
+                                    label Problem Category:
                                     div.fld(id=`probcat${idx}` data-key=`problemcatagory: ${item.problemcatagory}`) #{item.problemcatagory}
                                 div
                                     label Status:
