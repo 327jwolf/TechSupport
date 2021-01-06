@@ -531,7 +531,7 @@ domIsReady (function() {
         [...btnEditHeaders].forEach((headerBtn) => {
             headerBtn.addEventListener('click', e => {
                 let datakeys = {};
-                let headerDiv = e.target.parentElement.parentElement;
+                let headerDiv = e.target.parentElement.parentElement.parentElement;
                 let clickmessage = headerDiv.querySelector('.clickmessage');
                 let headerDivFields = headerDiv.querySelectorAll('.fld');
                 [...headerDivFields].forEach(item => {
