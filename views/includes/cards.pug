@@ -264,7 +264,7 @@ div.cardsDiv.mt1
                     div
                         label Created By:
                         div.fld(id=`owner${idx}` data-key=`createdBy: ${doc.createdBy}`) #{doc.createdBy}
-                
+                        div #{user.firstname} #{user.lastname}
                     div
                         label Job Number:
                         div.w100.fld.mt1(id=`jn${idx}` data-key=`jobnumber: ${doc.jobnumber}`) #{doc.jobnumber}
@@ -296,6 +296,7 @@ div.cardsDiv.mt1
                                 div
                                     label CreatedBy:
                                     div.fld(id=`created${idx}` data-key=`createdBy: ${item.createdBy}`) #{item.createdBy}
+                                    div #{user.firstname} #{user.lastname}
                                 div
                                     label Contact Name: 
                                     div.fld(id=`cn${idx}` data-key=`contactname: ${item.contactname}`) #{item.contactname}
