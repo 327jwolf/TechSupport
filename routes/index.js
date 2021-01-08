@@ -46,11 +46,22 @@ router.get('/autoinc', async function(req, res, next){
   .catch(err => console.error(err))
 })
 
+async function getUserName(obj) {
+    try {
+      let user = await findOneUser({'_id': obj.createdBy});
+      obj.username = `${user.firstname} ${user.lastname}` || "";
+      return obj
+    } catch (error) {
+      console.log('Error finding user', error);
+    }
+}
+
 router.get('/dashboard', redirectLogin,  async function(req, res, next){
   try {
-    const user = await findOneUser({'_id': req.session.user.id})
-    delete user.password
-    const techInfo = await findAllTechInfo()
+    const user = await findOneUser({'_id': req.session.user.id});
+    delete user.password;
+    let techInfo = await findAllTechInfo();
+    
     techInfo.sort((a,b) => {
       var ticketnumberA = parseInt(a.ticketnumber); 
       var ticketnumberB = parseInt(b.ticketnumber); 
@@ -62,6 +73,8 @@ router.get('/dashboard', redirectLogin,  async function(req, res, next){
       }
       return 0;
     })
+    await Promise.all(await techInfo.map(async el => await getUserName(el))) 
+
     const techInfoSubs = await findAllTechInfoSub()
     techInfoSubs.sort((a,b) => {
       var createdAtA = new Date(a.createdAt).valueOf(); 
@@ -76,7 +89,8 @@ router.get('/dashboard', redirectLogin,  async function(req, res, next){
       }
       return 0;
     })
-    // console.log(techInfoSubs)
+    await Promise.all(await techInfoSubs.map(async el => await getUserName(el))) 
+
     res.render('dashboard', { 
       title: mainTitle,
       user: user,

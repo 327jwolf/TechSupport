@@ -262,9 +262,8 @@ div.cardsDiv.mt1
                         label Created Date:
                         div.fld(id=`ts${idx}` data-key=`createdAt: ${doc.createdAt}`) #{doc.createdAt}
                     div
-                        label Created By:
+                        label Created By: #{doc.username}
                         div.fld(id=`owner${idx}` data-key=`createdBy: ${doc.createdBy}`) #{doc.createdBy}
-                        
                     div
                         label Job Number:
                         div.w100.fld.mt1(id=`jn${idx}` data-key=`jobnumber: ${doc.jobnumber}`) #{doc.jobnumber}
@@ -294,7 +293,7 @@ div.cardsDiv.mt1
                                     label Status:
                                     div.fld(id=`stat${idx}` data-key=`ticketstatus: ${item.ticketstatus}`) #{item.ticketstatus}
                                 div
-                                    label CreatedBy:
+                                    label CreatedBy: #{item.username}
                                     div.fld(id=`created${idx}` data-key=`createdBy: ${item.createdBy}`) #{item.createdBy}
                                     
                                 div
