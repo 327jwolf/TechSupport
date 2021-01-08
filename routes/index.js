@@ -81,10 +81,10 @@ router.get('/dashboard', redirectLogin,  async function(req, res, next){
       var createdAtB = new Date(b.createdAt).valueOf(); 
       // console.log(createdAtA, createdAtB)
 
-      if (createdAtA < createdAtB) {
+      if (createdAtA > createdAtB) {
         return 1;
       }
-      if (createdAtA > createdAtB) {
+      if (createdAtA < createdAtB) {
         return -1;
       }
       return 0;
