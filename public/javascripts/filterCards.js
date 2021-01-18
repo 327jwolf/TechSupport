@@ -20,7 +20,7 @@ domIsReady(function() {
                 let key = filterByObj.find(element => element[0] == keyValue[0]);
                 return key[1] && keyValue[1].toLowerCase().search(key[1]) === -1; 
             }
-            // console.log(keyValue)
+            console.log(keyValue)
             
         })
     }
