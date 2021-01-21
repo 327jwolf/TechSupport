@@ -1,51 +1,77 @@
 domIsReady(function() {
     let searchInputs = document.querySelectorAll(`.filter input[type='search']`);
-    let filterArray = Array.from(searchInputs);
+    let filterArray = [...searchInputs];
     let cards = document.querySelectorAll('.cards');
+    console.log(cards.length)
 
-    function createFilterObj(){
-		let obj = []
-		filterArray.map(x => {
-			let val = x.value.toLowerCase();
-            let key = x.getAttribute('name');
-			obj.push([key, val]);
-		})
-		return obj;
-    }
+    const createSearchInputFilterArr = arr => arr.map(x => [x.getAttribute('name'), x.value.toLowerCase()])
 
-    function filterFields(fields, filterByObj) {
-        return Array.from(fields).filter((item) => {
-            let keyValue = item.getAttribute('data-key').split(': ');
-            if (filterByObj.find(element => element[0] == keyValue[0])) {
-                let key = filterByObj.find(element => element[0] == keyValue[0]);
-                return key[1] && keyValue[1].toLowerCase().search(key[1]) === -1; 
-            }
-            console.log(keyValue)
-            
+    const testEmptyArr = (arr) => arr.filter(x => x.value!== "").length === 0 ? true : false;
+
+    // const createObjectFromArray = arr => {
+    //     let obj = {}
+    //     arr.forEach(el => {
+    //         obj[el[0]] = el[1]
+    //     })
+    //     return obj
+    // }
+
+
+    function filterFields(card) {
+        let searchInputFilterArr = createSearchInputFilterArr(filterArray);
+        let fields = card.querySelectorAll('.fld');
+        let filteredFilterByArr = searchInputFilterArr.filter(x => (x[1]));
+        let fieldValues = [...fields].map(fld => {
+            fldArr = fld.getAttribute('data-key').split(': ')
+            return fldArr
+        })
+        let xxce = fieldValues.filter((x, idx) => {
+            let m = filteredFilterByArr.filter(y => y[0] === x[0] && x[1] !== "undefined" && x[1].toLowerCase().search(y[1]) !== -1)
+            return (m.length > 0 ? true : false)
+        })
+
+        return [...fields].filter((item) => {
+            if(xxce.length === filteredFilterByArr.length) return true
         })
     }
+
+    // function filterFields(card) {
+    //     let searchInputFilterArr = createSearchInputFilterArr(filterArray);
+    //     let fields = card.querySelectorAll('.fld');
+    //     return [...fields].filter((item) => {
+    //         let  itemKeyValue = item.getAttribute('data-key').split(': ');
+    //          if (searchInputFilterArr.find(element => element[0] === itemKeyValue[0])) {
+    //             let key = searchInputFilterArr.find(element => element[0] === itemKeyValue[0]);
+
+    //             return key[1] && itemKeyValue[1] !== "undefined" && itemKeyValue[1].toLowerCase().search(key[1]) !== -1; 
+    //         }
+    //     })
+    // }
+
     
+   
     function filterCards() {
-        let filterObj = createFilterObj();
-        let cardArray = Array.from(cards);
-        // console.log(cardArray)
-
-        cardArray.forEach(card => {
-            card.parentElement.style.display = "";
-            let cardHeaderItems = card.querySelectorAll('.fld');
-            // let cardDiv = card.querySelectorAll('.card-div');
-            let headerItems = filterFields(cardHeaderItems, filterObj);
-            // let divItems = filterFields(cardDivItems, filterObj);
-            headerItems.forEach(item => card.parentElement.style.display = 'none');
-            // divItems.forEach(item => card.style.display = 'none');
+        [...cards].forEach((card) => {
+            card.parentElement.style.display = "none";
+            let filteredCards = filterFields(card);
+            if (filteredCards.length > 0) {
+                card.parentElement.style.display = ''
+            }
         })
+        if (testEmptyArr(filterArray)) {
+            cards.forEach(card => card.parentElement.style.display = "")
+        }
     }
 
-    filterArray.map((x, index) => {
-		if (index >= 0) {
-			x.addEventListener('keyup', (e) => {
-				filterCards()
-			})
-		}
+    filterArray.map((x) => {
+        x.addEventListener('keyup', (e) => {
+            filterCards();
+        })
+        x.addEventListener('click', (e) => {
+            // filterCards();
+            if (testEmptyArr(filterArray)) {
+                cards.forEach(card => card.parentElement.style.display = "")
+            }
+        })
     })
 })
