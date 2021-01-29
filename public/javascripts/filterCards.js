@@ -16,7 +16,6 @@ domIsReady(function() {
     //     return obj
     // }
 
-
     function filterFields(card) {
         let searchInputFilterArr = createSearchInputFilterArr(filterArray);
         let fields = card.querySelectorAll('.fld');
@@ -47,8 +46,6 @@ domIsReady(function() {
     //         }
     //     })
     // }
-
-    
    
     function filterCards() {
         [...cards].forEach((card) => {
