@@ -7,7 +7,7 @@ const { insertContact, updateContact } = require('../models/techContactsInterfac
 const { codeArray: countryCodes2 } = require('../middleware/countryCodes2.js');
 const { redirectLogin } = require('../middleware/auth');
 
-const mainTitle = 'Technical Service Support';
+const mainTitle = 'Technical Service Support 00.00.01';
 let countryCodes = {}
 
 countryCodes2.sort((a, b) => {
