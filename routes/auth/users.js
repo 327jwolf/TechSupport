@@ -21,7 +21,7 @@ router.get('/login', async function(req, res, next){
   }
   res.render('login',{ 
     title: mainTitle,
-    csrfToken: req.csrfToken()
+    // csrfToken: req.csrfToken()
   })
 })
 
@@ -43,7 +43,7 @@ router.post('/login', loginSchema, async function(req, res, next){
     if (!errors.isEmpty()) {
       return res.render('login', {
           title: mainTitle,
-          csrfToken: req.csrfToken(),
+          // csrfToken: req.csrfToken(),
           'error': errors.array().map(x => x.msg).join(',\n')//.toString()
         })
          
@@ -59,7 +59,7 @@ router.post('/login', loginSchema, async function(req, res, next){
       let error = 'Oops, There is something wrong with your email or password. Please, try again'
       return res.render('login', {
         title: mainTitle,
-        csrfToken: req.csrfToken(),
+        // csrfToken: req.csrfToken(),
         'error': error
       })
     } else {
@@ -98,7 +98,7 @@ router.post('/register', registrationSchema, async function(req, res, next){
     if (!errors.isEmpty()) {
         res.render('register', {
           title: mainTitle,
-          csrfToken: req.csrfToken(),
+          // csrfToken: req.csrfToken(),
           'error': errors.array().map(x => x.msg).join(',\n')//.toString()
         })
         return 
@@ -114,7 +114,7 @@ router.post('/register', registrationSchema, async function(req, res, next){
       let error = 'User already exists. Please try again'
       res.render('register', {
         title: mainTitle,
-        csrfToken: req.csrfToken(),
+        // csrfToken: req.csrfToken(),
         'error': error
       })
       return

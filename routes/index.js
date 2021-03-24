@@ -36,7 +36,7 @@ countryCodes2.sort((a, b) => {
 router.get('/', function(req, res, next) {
   res.render('register', { 
     title: mainTitle,
-    csrfToken: req.csrfToken()
+    // csrfToken: req.csrfToken()
     });
 });
 
@@ -94,7 +94,7 @@ router.get('/dashboard', redirectLogin,  async function(req, res, next){
     res.render('dashboard', { 
       title: mainTitle,
       user: user,
-      csrfToken: req.csrfToken(),
+      // csrfToken: req.csrfToken(),
       countryCodes: countryCodes,
       techInfo: techInfo,
       techInfoSub: techInfoSubs,
