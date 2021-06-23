@@ -84,7 +84,7 @@ router.get('/register', async function(req, res, next){
   }
   res.render('register',{ 
     title: mainTitle,
-    csrfToken: req.csrfToken(),
+    // csrfToken: req.csrfToken(),
     error: ""
   })
 })
